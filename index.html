@@ -1,107 +1,658 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Economics Unit 4 Review Games</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Georgia, 'Times New Roman', serif;
-      background: #f5f0e6;
-      color: #1f2933;
-    }
-    header {
-      padding: 48px 20px 32px;
-      text-align: center;
-      background: linear-gradient(135deg, #263238, #3f4f57);
-      color: white;
-      border-bottom: 8px solid #b08d57;
-    }
-    header h1 {
-      margin: 0;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      letter-spacing: 0.03em;
-    }
-    header p {
-      margin: 12px auto 0;
-      max-width: 680px;
-      font-size: 1.1rem;
-      line-height: 1.5;
-    }
-    main {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-    }
-    .card {
-      background: #fffaf0;
-      border: 2px solid #d6c29a;
-      border-radius: 20px;
-      padding: 28px;
-      text-align: center;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.12);
-    }
-    .card h2 {
-      margin: 0 0 12px;
-      font-size: 1.45rem;
-      color: #263238;
-    }
-    .card p {
-      margin: 0;
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-    .button {
-      display: inline-block;
-      margin-top: 22px;
-      padding: 13px 20px;
-      border-radius: 12px;
-      background: #8b1e1e;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      letter-spacing: 0.02em;
-    }
-    .button:hover { background: #641515; }
-    footer {
-      padding: 28px 20px;
-      text-align: center;
-      color: #555;
-      font-size: 0.95rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr. Rogers' Rad Red 40 Econ Class</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #0a1f0e;
+  --green-dark: #0f2d14;
+  --green-mid: #1a4d1f;
+  --green-bill: #155724;
+  --gold: #c9a84c;
+  --gold-bright: #f0cc6e;
+  --gold-pale: #fdf3d0;
+  --cream: #f5f0e0;
+  --ink: #0a1f0e;
+  --white: #ffffff;
+  --red: #c0392b;
+  --red-bright: #e74c3c;
+  --shadow: rgba(0,0,0,0.6);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--green-deep);
+  color: var(--cream);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── MONEY RAIN CANVAS ── */
+#money-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+}
+
+/* ── BILL TEXTURE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(201,168,76,0.03) 61px),
+    repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(201,168,76,0.03) 61px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── RADIAL SPOTLIGHT ── */
+body::after {
+  content: '';
+  position: fixed;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(ellipse, rgba(21,87,36,0.45) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+
+/* ── HEADER ── */
+header {
+  padding-top: 3.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 3px solid var(--gold-bright);
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 0 6px rgba(201,168,76,0.15), 0 0 40px rgba(201,168,76,0.25);
+  animation: pulse-seal 3s ease-in-out infinite;
+}
+
+@keyframes pulse-seal {
+  0%, 100% { box-shadow: 0 0 0 6px rgba(201,168,76,0.15), 0 0 40px rgba(201,168,76,0.25); }
+  50% { box-shadow: 0 0 0 12px rgba(201,168,76,0.08), 0 0 60px rgba(201,168,76,0.4); }
+}
+
+.eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.main-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 0.92;
+  color: var(--white);
+  text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+  margin-bottom: 0.4rem;
+}
+
+.main-title .red-word {
+  color: var(--red-bright);
+  position: relative;
+  display: inline-block;
+}
+
+.main-title .red-word::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--red-bright);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.main-title .gold-word {
+  color: var(--gold-bright);
+}
+
+.tagline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+/* ── DIVIDER BILL ── */
+.bill-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0 3rem;
+}
+.bill-divider .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.bill-divider .inner {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* ── SECTION HEADING ── */
+.section-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.6);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,168,76,0.15);
+}
+
+/* ── UNIT CARDS ── */
+.units-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.unit-card {
+  position: relative;
+  background: var(--green-dark);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  display: block;
+  cursor: pointer;
+}
+
+.unit-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.unit-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.2), inset 0 1px 0 rgba(201,168,76,0.1);
+}
+.unit-card:hover::before { opacity: 1; }
+
+/* coming soon */
+.unit-card.soon {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.card-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card-num .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: inline-block;
+}
+
+.card-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+  display: block;
+  line-height: 1;
+}
+
+.card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+.card-desc {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: rgba(245,240,224,0.55);
+  margin-bottom: 1.25rem;
+}
+
+.card-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+.topic-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.2);
+  color: rgba(201,168,76,0.8);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  transition: gap 0.2s;
+}
+.unit-card:hover .card-cta { gap: 0.75rem; }
+.card-cta .arrow { font-size: 1rem; transition: transform 0.2s; }
+.unit-card:hover .card-cta .arrow { transform: translateX(4px); }
+
+.soon-badge {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.25);
+  color: rgba(201,168,76,0.6);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* corner watermark number */
+.card-watermark {
+  position: absolute;
+  bottom: -0.5rem;
+  right: 1rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem;
+  font-weight: 900;
+  color: rgba(201,168,76,0.05);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── BOTTOM TICKER ── */
+.ticker-wrap {
+  background: var(--gold);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0.55rem 0;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+}
+.ticker-inner {
+  display: inline-block;
+  animation: ticker 30s linear infinite;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.ticker-inner span { margin: 0 2rem; }
+.ticker-inner .bull { color: var(--green-bill); }
+.ticker-inner .sym { opacity: 0.4; }
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  margin-top: 4rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.3);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.anim { opacity: 0; animation: fadeSlideUp 0.6s ease forwards; }
+.d1 { animation-delay: 0.1s; }
+.d2 { animation-delay: 0.2s; }
+.d3 { animation-delay: 0.3s; }
+.d4 { animation-delay: 0.4s; }
+.d5 { animation-delay: 0.5s; }
+.d6 { animation-delay: 0.6s; }
+.d7 { animation-delay: 0.7s; }
+.d8 { animation-delay: 0.8s; }
+
+@media (max-width: 600px) {
+  .units-grid { grid-template-columns: 1fr; }
+  .main-title { font-size: 2.6rem; }
+}
+
+.game-links {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.game-button {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+  background: var(--gold-bright);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.game-button:hover {
+  background: var(--gold-pale);
+  transform: translateY(-2px);
+}
+
+</style>
 </head>
 <body>
+
+<canvas id="money-canvas"></canvas>
+
+<div class="wrap">
   <header>
-    <h1>Economics Unit 4 Review Games</h1>
-    <p>Choose a review game below. Complete each one to practice the major concepts from Unit 4.</p>
+    <div class="seal anim d1">💵</div>
+    <div class="eyebrow anim d2">San Diego · CP Economics · 12th Grade</div>
+    <h1 class="main-title anim d3">
+      Mr. Rogers'<br>
+      <span class="red-word">Rad</span> <span class="gold-word">Red 40</span><br>
+      Econ Class
+    </h1>
+    <p class="tagline anim d4">Review Games · Practice Sites · Unit by Unit</p>
   </header>
 
-  <main>
-    <section class="card">
-      <h2>GDP Review</h2>
-      <p>Practice the meaning of GDP and how economists measure economic output.</p>
-      <a class="button" href="u4l1game.html">Play GDP Game</a>
-    </section>
+  <div class="bill-divider anim d5">
+    <div class="line"></div>
+    <div class="inner">$ · Select Your Unit · $</div>
+    <div class="line"></div>
+  </div>
 
-    <section class="card">
-      <h2>Business Cycle Review</h2>
-      <p>Review expansion, peak, contraction, recession, trough, and recovery.</p>
-      <a class="button" href="u4l2game.html">Play Business Cycle Game</a>
-    </section>
+  <div class="section-heading anim d5">Unit Review Games</div>
 
-    <section class="card">
-      <h2>Inflation Review</h2>
-      <p>Practice inflation, purchasing power, price changes, and real-world effects.</p>
-      <a class="button" href="u4l3game.html">Play Inflation Game</a>
-    </section>
-  </main>
+  <div class="units-grid">
 
-  <footer>Economics Unit 4 Review</footer>
+    <!-- UNIT 1 -->
+    <a class="unit-card soon anim d5" href="#" onclick="return false;">
+      <div class="card-num"><span class="dot"></span> Unit 1</div>
+      <span class="card-icon">🏛️</span>
+      <div class="card-title">Foundations of Economics</div>
+      <div class="card-desc">Scarcity, opportunity cost, trade-offs, economic systems, and the basics of how markets work.</div>
+      <div class="card-topics">
+        <span class="topic-tag">Scarcity</span>
+        <span class="topic-tag">Opportunity Cost</span>
+        <span class="topic-tag">PPC</span>
+        <span class="topic-tag">Systems</span>
+      </div>
+      <div class="card-cta">Coming Soon</div>
+      <span class="soon-badge">Soon</span>
+      <div class="card-watermark">1</div>
+    </a>
+
+    <!-- UNIT 2 -->
+    <a class="unit-card soon anim d5" href="#" onclick="return false;">
+      <div class="card-num"><span class="dot"></span> Unit 2</div>
+      <span class="card-icon">📈</span>
+      <div class="card-title">Supply &amp; Demand</div>
+      <div class="card-desc">How prices are set, what shifts curves, market equilibrium, and price controls.</div>
+      <div class="card-topics">
+        <span class="topic-tag">Supply</span>
+        <span class="topic-tag">Demand</span>
+        <span class="topic-tag">Equilibrium</span>
+        <span class="topic-tag">Elasticity</span>
+      </div>
+      <div class="card-cta">Coming Soon</div>
+      <span class="soon-badge">Soon</span>
+      <div class="card-watermark">2</div>
+    </a>
+
+    <!-- UNIT 3 -->
+    <a class="unit-card soon anim d6" href="#" onclick="return false;">
+      <div class="card-num"><span class="dot"></span> Unit 3</div>
+      <span class="card-icon">🏢</span>
+      <div class="card-title">Market Structures</div>
+      <div class="card-desc">Competition, monopoly, oligopoly, and how market structure shapes prices and power.</div>
+      <div class="card-topics">
+        <span class="topic-tag">Competition</span>
+        <span class="topic-tag">Monopoly</span>
+        <span class="topic-tag">Oligopoly</span>
+        <span class="topic-tag">Antitrust</span>
+      </div>
+      <div class="card-cta">Coming Soon</div>
+      <span class="soon-badge">Soon</span>
+      <div class="card-watermark">3</div>
+    </a>
+
+    <!-- UNIT 4 — LIVE -->
+<div class="unit-card anim d6">
+  <div class="card-num"><span class="dot"></span> Unit 4</div>
+  <span class="card-icon">📊</span>
+  <div class="card-title">Macroeconomics &amp; Policy</div>
+  <div class="card-desc">GDP, the business cycle, inflation vs unemployment, and how the government intervenes in the economy.</div>
+
+  <div class="card-topics">
+    <span class="topic-tag">GDP</span>
+    <span class="topic-tag">Business Cycle</span>
+    <span class="topic-tag">Inflation</span>
+    <span class="topic-tag">Fiscal Policy</span>
+  </div>
+
+  <div class="game-links">
+    <a class="game-button" href="u4l1game.html">GDP Game</a>
+    <a class="game-button" href="u4l2game.html">Business Cycle Game</a>
+    <a class="game-button" href="u4l3game.html">Inflation Game</a>
+  </div>
+
+  <div class="card-watermark">4</div>
+</div>
+
+    <!-- UNIT 5 -->
+    <a class="unit-card soon anim d7" href="#" onclick="return false;">
+      <div class="card-num"><span class="dot"></span> Unit 5</div>
+      <span class="card-icon">🌎</span>
+      <div class="card-title">Personal Finance &amp; Global Econ</div>
+      <div class="card-desc">Budgeting, credit, trade, exchange rates, and the global economy's effect on everyday life.</div>
+      <div class="card-topics">
+        <span class="topic-tag">Budgeting</span>
+        <span class="topic-tag">Credit</span>
+        <span class="topic-tag">Trade</span>
+        <span class="topic-tag">Exchange Rates</span>
+      </div>
+      <div class="card-cta">Coming Soon</div>
+      <span class="soon-badge">Soon</span>
+      <div class="card-watermark">5</div>
+    </a>
+
+  </div>
+
+  <div class="ticker-wrap anim d8">
+    <div class="ticker-inner" id="ticker">
+      <span>💵 GDP</span><span class="sym">·</span>
+      <span class="bull">▲ EXPANSION</span><span class="sym">·</span>
+      <span>📉 RECESSION</span><span class="sym">·</span>
+      <span class="bull">▲ CONSUMPTION</span><span class="sym">·</span>
+      <span>🏦 FISCAL POLICY</span><span class="sym">·</span>
+      <span class="bull">▲ INVESTMENT</span><span class="sym">·</span>
+      <span>📊 PHILLIPS CURVE</span><span class="sym">·</span>
+      <span>🔁 BUSINESS CYCLE</span><span class="sym">·</span>
+      <span class="bull">▲ RECOVERY</span><span class="sym">·</span>
+      <span>💰 NET EXPORTS</span><span class="sym">·</span>
+      <span>🏛️ GOVT SPENDING</span><span class="sym">·</span>
+      <span class="bull">▲ EMPLOYMENT</span><span class="sym">·</span>
+      <span>📉 INFLATION</span><span class="sym">·</span>
+      <span>💵 GDP</span><span class="sym">·</span>
+      <span class="bull">▲ EXPANSION</span><span class="sym">·</span>
+      <span>📉 RECESSION</span><span class="sym">·</span>
+      <span class="bull">▲ CONSUMPTION</span><span class="sym">·</span>
+      <span>🏦 FISCAL POLICY</span><span class="sym">·</span>
+      <span class="bull">▲ INVESTMENT</span><span class="sym">·</span>
+      <span>📊 PHILLIPS CURVE</span><span class="sym">·</span>
+      <span>🔁 BUSINESS CYCLE</span><span class="sym">·</span>
+      <span class="bull">▲ RECOVERY</span><span class="sym">·</span>
+      <span>💰 NET EXPORTS</span><span class="sym">·</span>
+      <span>🏛️ GOVT SPENDING</span><span class="sym">·</span>
+      <span class="bull">▲ EMPLOYMENT</span><span class="sym">·</span>
+      <span>📉 INFLATION</span>
+    </div>
+  </div>
+
+  <footer class="anim d8">
+    &copy; Mr. Rogers · Red 40 · CP Economics · Southeast San Diego
+  </footer>
+</div>
+
+<script>
+/* ── MONEY RAIN CANVAS ── */
+var canvas = document.getElementById('money-canvas');
+var ctx = canvas.getContext('2d');
+var W, H, drops = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+var symbols = ['$', '$', '$', '¢', '₿', '$', '$', '💵', '$', '$'];
+
+function Drop() {
+  this.reset = function() {
+    this.x = Math.random() * W;
+    this.y = -60 - Math.random() * H;
+    this.speed = 0.6 + Math.random() * 1.2;
+    this.size = 10 + Math.random() * 18;
+    this.sym = symbols[Math.floor(Math.random() * symbols.length)];
+    this.alpha = 0.3 + Math.random() * 0.7;
+    this.rotate = (Math.random() - 0.5) * 0.4;
+    this.angle = 0;
+    this.drift = (Math.random() - 0.5) * 0.3;
+  };
+  this.reset();
+  this.y = Math.random() * H; // start spread out
+}
+
+for (var i = 0; i < 60; i++) drops.push(new Drop());
+
+function animateMoney() {
+  ctx.clearRect(0, 0, W, H);
+  drops.forEach(function(d) {
+    ctx.save();
+    ctx.globalAlpha = d.alpha;
+    ctx.translate(d.x, d.y);
+    ctx.rotate(d.angle);
+    ctx.font = 'bold ' + d.size + 'px serif';
+    ctx.fillStyle = '#c9a84c';
+    ctx.fillText(d.sym, 0, 0);
+    ctx.restore();
+    d.y += d.speed;
+    d.x += d.drift;
+    d.angle += d.rotate * 0.02;
+    if (d.y > H + 80) d.reset();
+  });
+  requestAnimationFrame(animateMoney);
+}
+animateMoney();
+
+/* ── UNIT 4 sub-links — clicking card goes to L1; 
+   future: could route to a unit hub page ── */
+</script>
 </body>
 </html>

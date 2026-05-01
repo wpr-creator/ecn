@@ -96,6 +96,15 @@
   .ss-status{display:inline-block;margin-top:0.6rem;font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--muted);}
   .takeaway-select{width:100%;background:var(--card);border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:0.65rem;font-family:'Outfit',sans-serif;font-weight:600;}
   .rs-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.75rem;box-shadow:var(--shadow);text-align:center;}
+  .testprep-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem;margin:1rem 0;text-align:left;}
+  .testprep-card h3{font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;}
+  .testprep-q{border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.75rem;}
+  .testprep-q p{font-size:0.85rem;font-weight:800;line-height:1.4;margin-bottom:0.5rem;}
+  .testprep-choices{display:flex;flex-wrap:wrap;gap:0.45rem;}
+  .testprep-choices button{background:var(--card);border:1px solid var(--border);border-radius:999px;color:var(--ink);padding:0.45rem 0.7rem;font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:800;cursor:pointer;}
+  .testprep-choices button.correct{background:rgba(76,175,125,0.15);border-color:var(--correct);color:var(--correct);}
+  .testprep-choices button.wrong{background:rgba(224,92,92,0.10);border-color:var(--wrong);color:var(--wrong);}
+  .testprep-status{text-align:center;font-weight:800;font-size:0.82rem;margin-top:0.8rem;}
   .rs-title{font-size:2.25rem;font-weight:800;line-height:1;font-family:'Outfit',sans-serif;margin-bottom:0.6rem;}
   .rs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0.8rem;margin:1.25rem 0;}
   .rs-mini{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem;}
@@ -311,6 +320,13 @@
     <div style="font-family:'Space Mono',monospace;font-size:1.25rem;color:var(--accent);font-weight:700;margin-bottom:1rem;">
       Correct: <span id="final-c">0</span> · Wrong: <span id="final-w">0</span>
     </div>
+    <div class="testprep-card">
+      <h3>Final Test-Style Check</h3>
+      <div class="testprep-q"><p>1. The CPI measures inflation by tracking what?</p><div class="testprep-choices"><button onclick="u4l3PrepAns(0,this,false)">Exports minus imports</button><button onclick="u4l3PrepAns(0,this,true)">A fixed basket of goods over time</button><button onclick="u4l3PrepAns(0,this,false)">Federal spending totals</button></div></div>
+      <div class="testprep-q"><p>2. A worker replaced by automation is most likely experiencing what?</p><div class="testprep-choices"><button onclick="u4l3PrepAns(1,this,false)">Frictional unemployment</button><button onclick="u4l3PrepAns(1,this,true)">Structural unemployment</button><button onclick="u4l3PrepAns(1,this,false)">Cyclical unemployment</button></div></div>
+      <div class="testprep-q"><p>3. The Phillips Curve shows a trade-off between what?</p><div class="testprep-choices"><button onclick="u4l3PrepAns(2,this,false)">GDP and debt</button><button onclick="u4l3PrepAns(2,this,true)">Inflation and unemployment</button><button onclick="u4l3PrepAns(2,this,false)">Exports and imports</button></div></div>
+      <div class="testprep-status" id="u4l3-testprep-status">Complete this final check to unlock review tools.</div>
+    </div>
     <div class="unlock-row">
       <button class="check-btn" style="margin:0;" onclick="unlockReview()">Unlock Flashcards + Quiz</button>
       <button class="check-btn" style="margin:0;background:var(--accent2);color:white;" onclick="sw('ut')">Review Again</button>
@@ -354,6 +370,8 @@ var gC=0,gW=0,gS=0;
 function addScore(ok){if(ok){gC++;gS++;}else{gW++;gS=0;}document.getElementById('sc-c').textContent=gC;document.getElementById('sc-w').textContent=gW;document.getElementById('sc-s').textContent=gS;}
 var coreDone={ut:false,ct:false,ss:false};
 var reviewUnlocked=false;
+var u4l3TestPrepDone=false;
+var u4l3PrepAnswered=[false,false,false];
 var ssLow=false, ssHigh=false;
 
 function updateResults(){
@@ -378,7 +396,21 @@ function markCore(name){
   if(coreDone.ut && coreDone.ct && coreDone.ss){setTimeout(function(){sw('rs');},600);}
 }
 
+function u4l3PrepAns(i,btn,correct){
+  if(u4l3PrepAnswered[i])return;
+  u4l3PrepAnswered[i]=true;
+  btn.classList.add(correct?'correct':'wrong');
+  Array.from(btn.parentElement.querySelectorAll('button')).forEach(function(b){b.disabled=true;});
+  addScore(correct);
+  if(u4l3PrepAnswered.every(Boolean)){
+    u4l3TestPrepDone=true;
+    var s=document.getElementById('u4l3-testprep-status');
+    if(s){s.textContent='✅ Final check complete. Flashcards and quiz are ready.';s.style.color='var(--correct)';}
+  }
+}
+
 function unlockReview(){
+  if(!u4l3TestPrepDone){sw('rs');return;}
   reviewUnlocked=true;
   document.getElementById('fl-tab').classList.remove('locked');
   document.getElementById('mc-tab').classList.remove('locked');

@@ -62,6 +62,309 @@
   .formula-result.ok{color:var(--correct);}.formula-result.bad{color:var(--wrong);}
   .clear-formula{display:block;margin:0.5rem auto 0;background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.4rem 1rem;border-radius:999px;font-family:'DM Sans',sans-serif;font-size:0.8rem;cursor:pointer;}
   .clear-formula:hover{border-color:var(--accent2);color:var(--accent2);}
+  /* GDP PER CAPITA ACTIVITY */
+  .percapita-game{display:none;}
+  .percapita-game.active{display:block;}
+  .pc-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:1.35rem;
+    box-shadow:0 14px 30px rgba(44,123,229,0.10);
+    margin-bottom:1rem;
+  }
+  .pc-scenario{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:1rem;
+    margin-bottom:1rem;
+  }
+  .pc-scenario h3{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.65rem;
+    letter-spacing:0.06em;
+    color:#102a43;
+    margin-bottom:0.35rem;
+  }
+  .pc-scenario p{
+    color:var(--muted);
+    font-size:0.9rem;
+    line-height:1.55;
+  }
+  .pc-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:1rem;
+    margin-bottom:1rem;
+  }
+  .pc-country{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:1rem;
+  }
+  .pc-country-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.5rem;
+    letter-spacing:0.05em;
+    color:var(--accent);
+    margin-bottom:0.4rem;
+  }
+  .pc-data{
+    font-size:0.86rem;
+    color:var(--text);
+    line-height:1.55;
+  }
+  .pc-data strong{color:#102a43;}
+  .pc-answer-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1rem;
+    margin-top:1rem;
+  }
+  .pc-answer{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:1rem;
+  }
+  .pc-answer label{
+    display:block;
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-weight:700;
+    color:var(--muted);
+    margin-bottom:0.4rem;
+  }
+  .pc-answer select{
+    width:100%;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--text);
+    border-radius:10px;
+    padding:0.7rem;
+    font-family:'DM Sans',sans-serif;
+    font-weight:700;
+  }
+  .pc-result{
+    text-align:center;
+    font-weight:700;
+    min-height:1.5rem;
+    margin-top:0.75rem;
+  }
+  .pc-result.ok{color:var(--correct);}
+  .pc-result.bad{color:var(--wrong);}
+  @media(max-width:560px){.pc-answer-row{grid-template-columns:1fr;}}
+
+  .tab-btn.locked{
+    opacity:0.45;
+    cursor:not-allowed;
+    filter:grayscale(0.4);
+  }
+  .checkpoint-game{display:none;}
+  .checkpoint-game.active{display:block;}
+  .checkpoint-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:1.75rem;
+    box-shadow:0 14px 30px rgba(44,123,229,0.10);
+    text-align:center;
+    margin-bottom:1.5rem;
+  }
+  .checkpoint-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:72px;
+    height:72px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#dbeafe,#ffffff);
+    border:2px solid var(--accent);
+    box-shadow:0 6px 0 rgba(44,123,229,0.12);
+    font-size:2rem;
+    margin-bottom:1rem;
+  }
+  .checkpoint-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:2.4rem;
+    letter-spacing:0.06em;
+    color:#102a43;
+    line-height:1;
+    margin-bottom:0.5rem;
+  }
+  .checkpoint-desc{
+    color:var(--muted);
+    font-size:0.9rem;
+    line-height:1.55;
+    max-width:620px;
+    margin:0 auto 1.25rem;
+  }
+  .checkpoint-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1rem;
+    margin:1.25rem 0;
+  }
+  .checkpoint-mini{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:1rem;
+    text-align:left;
+  }
+  .checkpoint-mini h3{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.35rem;
+    letter-spacing:0.05em;
+    color:var(--accent);
+    margin-bottom:0.35rem;
+  }
+  .checkpoint-mini p{
+    font-size:0.85rem;
+    color:var(--muted);
+    line-height:1.45;
+  }
+  .checkpoint-status{
+    display:inline-block;
+    margin-top:0.65rem;
+    padding:0.25rem 0.65rem;
+    border-radius:999px;
+    font-size:0.72rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .checkpoint-status.done{
+    background:rgba(47,191,113,0.14);
+    color:var(--correct);
+  }
+  .checkpoint-status.waiting{
+    background:rgba(229,83,61,0.12);
+    color:var(--wrong);
+  }
+  .unlock-btn{
+    background:var(--accent);
+    color:white;
+    border:none;
+    border-radius:999px;
+    padding:0.8rem 2rem;
+    font-family:'DM Sans',sans-serif;
+    font-weight:700;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:all 0.2s;
+  }
+  .unlock-btn:hover{transform:scale(1.04);}
+  .unlock-btn:disabled{
+    opacity:0.45;
+    cursor:not-allowed;
+    transform:none;
+  }
+
+  /* BLOCK FORMULA BUILDER */
+  .f-block{
+    background:#ffffff;
+    border:2px solid var(--accent);
+    border-radius:12px;
+    padding:0.6rem 1.2rem;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.4rem;
+    cursor:grab;
+    box-shadow:0 4px 0 rgba(0,0,0,0.1);
+    transition:all 0.15s;
+    margin:0.25rem;
+  }
+  .f-block:hover{transform:translateY(-2px);}
+  .f-block.used{opacity:0.35;pointer-events:none;}
+  .f-slot{
+    min-width:60px;
+    min-height:50px;
+    border:2px dashed var(--border);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.4rem;
+    background:#fff;
+  }
+  .f-slot.drag-over{
+    border-color:var(--accent);
+    background:rgba(44,123,229,0.1);
+  }
+  .formula-block-row{gap:0.45rem;align-items:center;}
+  .f-fixed{
+    min-width:38px;
+    min-height:50px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.65rem;
+    color:var(--muted);
+    background:rgba(44,123,229,0.06);
+    border:1px solid rgba(44,123,229,0.10);
+  }
+  .f-slot{min-width:74px;}
+  .f-slot.filled{
+    border-style:solid;
+    border-color:var(--accent);
+    background:#ffffff;
+    color:var(--accent);
+    box-shadow:0 4px 0 rgba(44,123,229,0.12);
+  }
+  .pc-drag{cursor:grab;transition:all 0.18s;}
+  .pc-drag:hover{transform:translateY(-2px);border-color:var(--accent);}
+  .pc-drag.used{opacity:0.35;pointer-events:none;}
+  .pc-rank-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:1rem;
+    margin-top:1rem;
+  }
+  .pc-rank-slot{
+    min-height:95px;
+    background:var(--card);
+    border:2px dashed var(--border);
+    border-radius:14px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:0.35rem;
+    padding:0.85rem;
+    text-align:center;
+    transition:all 0.18s;
+  }
+  .pc-rank-slot.drag-over{
+    border-color:var(--accent);
+    background:rgba(44,123,229,0.08);
+    transform:translateY(-2px);
+  }
+  .pc-rank-slot.filled{
+    border-style:solid;
+    border-color:var(--accent);
+    background:#fff;
+  }
+  .pc-rank-label{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-weight:700;
+    color:var(--muted);
+  }
+  .pc-slot-text{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.5rem;
+    color:var(--accent);
+    letter-spacing:0.05em;
+  }
+
+
 
   /* FLASHCARDS */
   .flash-game{display:none;}.flash-game.active{display:block;}
@@ -118,8 +421,10 @@
 <div class="mode-tabs">
   <button class="tab-btn active" onclick="sw('sort')">📦 GDP Sort</button>
   <button class="tab-btn" onclick="sw('formula')">🔢 Formula Builder</button>
-  <button class="tab-btn" onclick="sw('flash')">⚡ Key Terms</button>
-  <button class="tab-btn" onclick="sw('mc')">🎯 Quick Quiz</button>
+  <button class="tab-btn" onclick="sw('percapita')">👥 GDP Per Capita</button>
+  <button class="tab-btn" onclick="sw('checkpoint')">✅ Results Checkpoint</button>
+  <button class="tab-btn locked" id="flash-tab" onclick="sw('flash')">⚡ Key Terms</button>
+  <button class="tab-btn locked" id="mc-tab" onclick="sw('mc')">🎯 Quick Quiz</button>
 </div>
 <div class="game-area">
 
@@ -147,8 +452,18 @@
 <!-- FORMULA BUILDER -->
 <div class="formula-game" id="formula-game">
   <div class="sec-title">🔢 Build the GDP Formula</div>
-  <div class="sec-desc">Click the pieces in the correct order. The pieces are shuffled — figure out where each one goes.</div>
-  <div class="formula-display" id="formula-display"><span style="color:var(--muted);font-size:1rem;font-weight:400">Click pieces below to build the formula</span></div>
+  <div class="sec-desc">Drag the formula blocks into the empty spaces. The + and = signs stay locked in place.</div>
+  <div class="formula-display formula-block-row" id="formula-slots">
+    <div class="f-slot" data-pos="0" data-answer="GDP"></div>
+    <div class="f-fixed">=</div>
+    <div class="f-slot" data-pos="1" data-answer="C"></div>
+    <div class="f-fixed">+</div>
+    <div class="f-slot" data-pos="2" data-answer="I"></div>
+    <div class="f-fixed">+</div>
+    <div class="f-slot" data-pos="3" data-answer="G"></div>
+    <div class="f-fixed">+</div>
+    <div class="f-slot" data-pos="4" data-answer="(X−M)"></div>
+  </div>
   <div id="formula-pieces" style="display:flex;flex-wrap:wrap;justify-content:center;"></div>
   <div class="formula-result" id="formula-result"></div>
   <button class="clear-formula" onclick="clearFormula()">↩ Clear</button>
@@ -160,6 +475,104 @@
       <div><span style="color:var(--accent);font-weight:700">G</span> — Government Spending</div>
       <div><span style="color:var(--accent);font-weight:700">X−M</span> — Net Exports</div>
     </div>
+  </div>
+</div>
+
+<!-- GDP PER CAPITA ACTIVITY -->
+<div class="percapita-game" id="percapita-game">
+  <div class="sec-title">👥 GDP Per Capita Challenge</div>
+  <div class="sec-desc">Drag each economy into the correct ranking from highest to lowest GDP per capita. Then answer the takeaway question.</div>
+
+  <div class="pc-card">
+    <div class="pc-scenario">
+      <h3>Rank the Economies</h3>
+      <p><strong>GDP per capita = total GDP ÷ population.</strong> Total GDP measures the whole economy. GDP per capita helps compare average output per person.</p>
+    </div>
+
+    <div class="pc-grid" id="pc-pool">
+      <div class="pc-country pc-drag" draggable="true" data-country="A">
+        <div class="pc-country-title">Country A</div>
+        <div class="pc-data">
+          <div><strong>Total GDP:</strong> $2 trillion</div>
+          <div><strong>Population:</strong> 200 million</div>
+          <div><strong>Per Capita:</strong> $10,000</div>
+        </div>
+      </div>
+
+      <div class="pc-country pc-drag" draggable="true" data-country="B">
+        <div class="pc-country-title">Country B</div>
+        <div class="pc-data">
+          <div><strong>Total GDP:</strong> $900 billion</div>
+          <div><strong>Population:</strong> 30 million</div>
+          <div><strong>Per Capita:</strong> $30,000</div>
+        </div>
+      </div>
+
+      <div class="pc-country pc-drag" draggable="true" data-country="C">
+        <div class="pc-country-title">Country C</div>
+        <div class="pc-data">
+          <div><strong>Total GDP:</strong> $1.5 trillion</div>
+          <div><strong>Population:</strong> 75 million</div>
+          <div><strong>Per Capita:</strong> $20,000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pc-rank-grid">
+      <div class="pc-rank-slot" data-rank="1"><span class="pc-rank-label">1st Highest</span><span class="pc-slot-text">Drop country here</span></div>
+      <div class="pc-rank-slot" data-rank="2"><span class="pc-rank-label">2nd Highest</span><span class="pc-slot-text">Drop country here</span></div>
+      <div class="pc-rank-slot" data-rank="3"><span class="pc-rank-label">3rd Highest</span><span class="pc-slot-text">Drop country here</span></div>
+    </div>
+
+    <div class="pc-answer" style="margin-top:1rem;">
+      <label for="pc-meaning">What is the main lesson?</label>
+      <select id="pc-meaning">
+        <option value="">Choose one...</option>
+        <option value="total">Total GDP always tells us who is better off.</option>
+        <option value="average">GDP per capita helps compare average output per person.</option>
+        <option value="informal">GDP per capita counts all informal work.</option>
+      </select>
+    </div>
+
+    <button class="check-btn" onclick="checkPerCapita()">Check My Ranking</button>
+    <div class="pc-result" id="pc-result"></div>
+    <button class="check-btn" id="pc-rb" style="display:none;background:var(--accent2)" onclick="resetPerCapita()">Try Again</button>
+  </div>
+</div>
+
+<!-- RESULTS CHECKPOINT -->
+<div class="checkpoint-game" id="checkpoint-game">
+  <div class="sec-title">✅ Results Checkpoint</div>
+  <div class="sec-desc">Complete Activities 1, 2, and 3 before moving on to flashcards and the quiz.</div>
+
+  <div class="checkpoint-card">
+    <div class="checkpoint-badge">📊</div>
+    <div class="checkpoint-title">Checkpoint Report</div>
+    <p class="checkpoint-desc">
+      GDP Sort, Formula Builder, and GDP Per Capita are the three required review activities. Once all three are completed, the rest of the review tools unlock.
+    </p>
+
+    <div class="checkpoint-grid">
+      <div class="checkpoint-mini">
+        <h3>Activity 1: GDP Sort</h3>
+        <p>Sort examples into “counts in GDP” and “does not count in GDP.”</p>
+        <span class="checkpoint-status waiting" id="sort-status">Not Complete</span>
+      </div>
+
+      <div class="checkpoint-mini">
+        <h3>Activity 2: Formula Builder</h3>
+        <p>Build the GDP formula in the correct order using the block pieces.</p>
+        <span class="checkpoint-status waiting" id="formula-status">Not Complete</span>
+      </div>
+
+      <div class="checkpoint-mini">
+        <h3>Activity 3: GDP Per Capita</h3>
+        <p>Compare total GDP, population, and average output per person.</p>
+        <span class="checkpoint-status waiting" id="percapita-status">Not Complete</span>
+      </div>
+    </div>
+
+    <button class="unlock-btn" id="unlock-btn" onclick="unlockReview()" disabled>Unlock Flashcards + Quiz</button>
   </div>
 </div>
 
@@ -202,7 +615,63 @@ function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math
 /* ── SCORE ── */
 var gC=0,gW=0,gS=0;
 function addScore(ok){if(ok){gC++;gS++;}else{gW++;gS=0;}document.getElementById('sc-c').textContent=gC;document.getElementById('sc-w').textContent=gW;document.getElementById('sc-s').textContent=gS;}
-function sw(m){['sort','formula','flash','mc'].forEach(function(id){document.getElementById(id+'-game').classList.remove('active');});document.getElementById(m+'-game').classList.add('active');document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',['sort','formula','flash','mc'][i]===m);});}
+var requiredComplete={sort:false,formula:false,percapita:false};
+var reviewUnlocked=false;
+
+function sw(m){
+  if((m==='flash'||m==='mc')&&!reviewUnlocked){
+    sw('checkpoint');
+    return;
+  }
+
+  ['sort','formula','percapita','checkpoint','flash','mc'].forEach(function(id){
+    document.getElementById(id+'-game').classList.remove('active');
+  });
+
+  document.getElementById(m+'-game').classList.add('active');
+
+  var order=['sort','formula','percapita','checkpoint','flash','mc'];
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){
+    b.classList.toggle('active',order[i]===m);
+  });
+
+  if(m==='checkpoint') updateCheckpoint();
+}
+
+function markRequired(name){
+  requiredComplete[name]=true;
+  updateCheckpoint();
+
+  if(requiredComplete.sort && requiredComplete.formula && requiredComplete.percapita){
+    setTimeout(function(){sw('checkpoint');},650);
+  }
+}
+
+function updateCheckpoint(){
+  var sortStatus=document.getElementById('sort-status');
+  var formulaStatus=document.getElementById('formula-status');
+  var percapitaStatus=document.getElementById('percapita-status');
+  var unlockBtn=document.getElementById('unlock-btn');
+
+  sortStatus.textContent=requiredComplete.sort?'Complete':'Not Complete';
+  sortStatus.className='checkpoint-status '+(requiredComplete.sort?'done':'waiting');
+
+  formulaStatus.textContent=requiredComplete.formula?'Complete':'Not Complete';
+  formulaStatus.className='checkpoint-status '+(requiredComplete.formula?'done':'waiting');
+
+  percapitaStatus.textContent=requiredComplete.percapita?'Complete':'Not Complete';
+  percapitaStatus.className='checkpoint-status '+(requiredComplete.percapita?'done':'waiting');
+
+  unlockBtn.disabled=!(requiredComplete.sort && requiredComplete.formula && requiredComplete.percapita);
+}
+
+function unlockReview(){
+  if(!(requiredComplete.sort && requiredComplete.formula && requiredComplete.percapita))return;
+  reviewUnlocked=true;
+  document.getElementById('flash-tab').classList.remove('locked');
+  document.getElementById('mc-tab').classList.remove('locked');
+  sw('flash');
+}
 
 /* ── GDP SORT ── */
 var sortAllItems=[
@@ -281,70 +750,266 @@ function checkSort(){
   });
   document.getElementById('sort-fb').innerHTML=html;
   addScore(num===sortAllItems.length);
+  markRequired('sort');
   document.getElementById('sort-rb').style.display='block';
 }
 function resetSort(){document.getElementById('sort-fb').innerHTML='';document.getElementById('sort-rb').style.display='none';initSort();}
 
-/* ── FORMULA BUILDER ── */
-// Pieces with a stable key and display label
+/* ── FORMULA BUILDER (DRAG BLOCKS) ── */
+// Students drag only the content blocks. The + and = signs stay fixed.
 var formulaPieces=[
   {key:'GDP',label:'GDP'},
-  {key:'=',label:'='},
   {key:'C',label:'C'},
-  {key:'+1',label:'+'},
   {key:'I',label:'I'},
-  {key:'+2',label:'+'},
   {key:'G',label:'G'},
-  {key:'+3',label:'+'},
   {key:'(X−M)',label:'(X−M)'},
 ];
-var correctOrder=['GDP','=','C','+1','I','+2','G','+3','(X−M)'];
-var currentFormula=[];
+var correctOrder=['GDP','C','I','G','(X−M)'];
 var fpUsed={};
 var shuffledPieces=[];
 
 function initFormula(){
-  currentFormula=[];fpUsed={};
+  fpUsed={};
   shuffledPieces=shuffle(formulaPieces);
-  renderFormula();
+  clearFormulaSlots();
+  renderFormulaPool();
+  setupFormulaDrag();
 }
 
-function renderFormula(){
-  var display=document.getElementById('formula-display');
+function clearFormulaSlots(){
+  document.querySelectorAll('.f-slot').forEach(function(s){
+    s.textContent='';
+    s.dataset.value='';
+    s.classList.remove('filled','drag-over');
+  });
+  var res=document.getElementById('formula-result');
+  res.textContent='';
+  res.className='formula-result';
+}
+
+function renderFormulaPool(){
   var pWrap=document.getElementById('formula-pieces');
-  document.getElementById('formula-result').textContent='';
-  document.getElementById('formula-result').className='formula-result';
-  if(currentFormula.length===0){
-    display.innerHTML='<span style="color:var(--muted);font-size:1rem;font-weight:400">Click pieces below to build the formula</span>';
-  }else{
-    display.innerHTML=currentFormula.map(function(k){
-      var p=formulaPieces.find(function(x){return x.key===k;});
-      return'<span style="color:var(--accent)">'+p.label+'</span>';
-    }).join(' ');
-  }
   pWrap.innerHTML='';
   shuffledPieces.forEach(function(p){
-    var btn=document.createElement('button');
-    btn.className='formula-piece-btn'+(fpUsed[p.key]?' fp-used':'');
-    btn.textContent=p.label;
-    btn.onclick=function(){addPiece(p.key);};
-    pWrap.appendChild(btn);
+    var d=document.createElement('div');
+    d.className='f-block'+(fpUsed[p.key]?' used':'');
+    d.textContent=p.label;
+    d.setAttribute('draggable','true');
+
+    d.addEventListener('dragstart',function(e){
+      if(fpUsed[p.key]) return;
+      e.dataTransfer.setData('text/plain',p.key);
+      e.dataTransfer.effectAllowed='move';
+    });
+
+    // Click fallback: place in first open slot.
+    d.addEventListener('click',function(){
+      if(fpUsed[p.key]) return;
+      var open=Array.prototype.find.call(document.querySelectorAll('.f-slot'),function(s){return !s.dataset.value;});
+      if(open) placeFormulaBlock(open,p.key);
+    });
+
+    pWrap.appendChild(d);
   });
 }
 
-function addPiece(key){
-  if(fpUsed[key])return;
-  currentFormula.push(key);fpUsed[key]=true;
-  renderFormula();
-  if(currentFormula.length===correctOrder.length){
-    var ok=JSON.stringify(currentFormula)===JSON.stringify(correctOrder);
-    var r=document.getElementById('formula-result');
-    if(ok){r.textContent='🎉 Perfect! GDP = C + I + G + (X − M)';r.className='formula-result ok';addScore(true);}
-    else{r.textContent='❌ Not quite — try again!';r.className='formula-result bad';addScore(false);setTimeout(clearFormula,1800);}
+function setupFormulaDrag(){
+  document.querySelectorAll('.f-slot').forEach(function(slot){
+    if(slot.dataset.ready==='true') return;
+    slot.dataset.ready='true';
+
+    slot.addEventListener('dragover',function(e){
+      e.preventDefault();
+      slot.classList.add('drag-over');
+    });
+
+    slot.addEventListener('dragleave',function(){
+      slot.classList.remove('drag-over');
+    });
+
+    slot.addEventListener('drop',function(e){
+      e.preventDefault();
+      slot.classList.remove('drag-over');
+      var key=e.dataTransfer.getData('text/plain');
+      if(!key) return;
+      placeFormulaBlock(slot,key);
+    });
+
+    // Click a filled slot to remove the block.
+    slot.addEventListener('click',function(){
+      if(!slot.dataset.value) return;
+      var old=slot.dataset.value;
+      fpUsed[old]=false;
+      slot.textContent='';
+      slot.dataset.value='';
+      slot.classList.remove('filled');
+      renderFormulaPool();
+      var res=document.getElementById('formula-result');
+      res.textContent='';
+      res.className='formula-result';
+    });
+  });
+}
+
+function placeFormulaBlock(slot,key){
+  if(fpUsed[key]) return;
+
+  if(slot.dataset.value){
+    fpUsed[slot.dataset.value]=false;
+  }
+
+  var piece=formulaPieces.find(function(x){return x.key===key;});
+  if(!piece) return;
+
+  slot.textContent=piece.label;
+  slot.dataset.value=key;
+  slot.classList.add('filled');
+  fpUsed[key]=true;
+  renderFormulaPool();
+  checkFormula();
+}
+
+function checkFormula(){
+  var built=Array.from(document.querySelectorAll('.f-slot')).map(function(s){return s.dataset.value;});
+  if(built.some(function(v){return !v;})) return;
+
+  var ok=JSON.stringify(built)===JSON.stringify(correctOrder);
+  var r=document.getElementById('formula-result');
+
+  if(ok){
+    r.textContent='🎉 Perfect! GDP = C + I + G + (X − M)';
+    r.className='formula-result ok';
+    addScore(true);
+    markRequired('formula');
+  }else{
+    r.textContent='❌ Not quite — click any block to remove it, then fix the order.';
+    r.className='formula-result bad';
+    addScore(false);
+    markRequired('formula');
   }
 }
 
-function clearFormula(){currentFormula=[];fpUsed={};renderFormula();}
+function clearFormula(){
+  fpUsed={};
+  clearFormulaSlots();
+  renderFormulaPool();
+}
+
+/* ── GDP PER CAPITA ACTIVITY ── */
+var pcCorrect={1:'B',2:'C',3:'A'};
+
+function setupPerCapitaDrag(){
+  document.querySelectorAll('.pc-drag').forEach(function(card){
+    if(card.dataset.ready==='true') return;
+    card.dataset.ready='true';
+
+    card.addEventListener('dragstart',function(e){
+      if(card.classList.contains('used')) return;
+      e.dataTransfer.setData('text/plain',card.dataset.country);
+      e.dataTransfer.effectAllowed='move';
+    });
+
+    // Click fallback: place in first open rank slot.
+    card.addEventListener('click',function(){
+      if(card.classList.contains('used')) return;
+      var open=Array.prototype.find.call(document.querySelectorAll('.pc-rank-slot'),function(s){return !s.dataset.country;});
+      if(open) placePerCapita(open,card.dataset.country);
+    });
+  });
+
+  document.querySelectorAll('.pc-rank-slot').forEach(function(slot){
+    if(slot.dataset.ready==='true') return;
+    slot.dataset.ready='true';
+
+    slot.addEventListener('dragover',function(e){
+      e.preventDefault();
+      slot.classList.add('drag-over');
+    });
+
+    slot.addEventListener('dragleave',function(){
+      slot.classList.remove('drag-over');
+    });
+
+    slot.addEventListener('drop',function(e){
+      e.preventDefault();
+      slot.classList.remove('drag-over');
+      var country=e.dataTransfer.getData('text/plain');
+      if(country) placePerCapita(slot,country);
+    });
+
+    // Click filled slot to remove.
+    slot.addEventListener('click',function(){
+      if(!slot.dataset.country) return;
+      var old=slot.dataset.country;
+      slot.dataset.country='';
+      slot.querySelector('.pc-slot-text').textContent='Drop country here';
+      slot.classList.remove('filled');
+      var card=document.querySelector('.pc-drag[data-country="'+old+'"]');
+      if(card) card.classList.remove('used');
+    });
+  });
+}
+
+function placePerCapita(slot,country){
+  var card=document.querySelector('.pc-drag[data-country="'+country+'"]');
+  if(!card || card.classList.contains('used')) return;
+
+  if(slot.dataset.country){
+    var old=slot.dataset.country;
+    var oldCard=document.querySelector('.pc-drag[data-country="'+old+'"]');
+    if(oldCard) oldCard.classList.remove('used');
+  }
+
+  slot.dataset.country=country;
+  slot.querySelector('.pc-slot-text').textContent='Country '+country;
+  slot.classList.add('filled');
+  card.classList.add('used');
+}
+
+function checkPerCapita(){
+  var meaning=document.getElementById('pc-meaning').value;
+  var res=document.getElementById('pc-result');
+  var slots=Array.from(document.querySelectorAll('.pc-rank-slot'));
+
+  if(slots.some(function(s){return !s.dataset.country;}) || !meaning){
+    res.textContent='⚠️ Rank all three countries and answer the lesson question first.';
+    res.className='pc-result bad';
+    return;
+  }
+
+  var rankingOk=slots.every(function(s){return s.dataset.country===pcCorrect[s.dataset.rank];});
+  var meaningOk=meaning==='average';
+  var ok=rankingOk && meaningOk;
+
+  if(ok){
+    res.textContent='✅ Correct! Ranking: Country B ($30,000), Country C ($20,000), Country A ($10,000). Total GDP alone does not tell the whole story.';
+    res.className='pc-result ok';
+    addScore(true);
+    markRequired('percapita');
+  }else{
+    res.textContent='❌ Not quite. Correct ranking is B, C, A. GDP per capita compares average output per person, not total economy size.';
+    res.className='pc-result bad';
+    addScore(false);
+    markRequired('percapita');
+  }
+
+  document.getElementById('pc-rb').style.display='block';
+}
+
+function resetPerCapita(){
+  document.querySelectorAll('.pc-rank-slot').forEach(function(slot){
+    slot.dataset.country='';
+    slot.querySelector('.pc-slot-text').textContent='Drop country here';
+    slot.classList.remove('filled','drag-over');
+  });
+  document.querySelectorAll('.pc-drag').forEach(function(card){
+    card.classList.remove('used');
+  });
+  document.getElementById('pc-meaning').value='';
+  document.getElementById('pc-result').textContent='';
+  document.getElementById('pc-result').className='pc-result';
+  document.getElementById('pc-rb').style.display='none';
+}
 
 /* ── FLASHCARDS ── */
 var cardData=[
@@ -439,7 +1104,7 @@ function setupDragDrop(){
 }
 
 /* ── INIT ── */
-initSort();setupDragDrop();initFormula();initCards();initQuiz();
+initSort();setupDragDrop();initFormula();setupPerCapitaDrag();initCards();initQuiz();updateCheckpoint();
 </script>
 </body>
 </html>

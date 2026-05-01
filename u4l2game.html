@@ -34,13 +34,13 @@
   .cycle-game{display:none;}.cycle-game.active{display:block;}
   .svg-wrap{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:var(--shadow);text-align:center;}
   .label-pool{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-bottom:1.25rem;}
-  .label-chip{background:var(--card);border:2px solid var(--border);color:var(--ink);padding:0.55rem 1.1rem;border-radius:8px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.18s;user-select:none;}
+  .label-chip{background:var(--card);border:2px solid var(--border);color:var(--ink);padding:0.55rem 1.1rem;border-radius:8px;font-weight:700;font-size:0.85rem;cursor:grab;transition:all 0.18s;user-select:none;}
   .label-chip:hover:not(.lc-used){border-color:var(--accent);color:var(--accent);}
   .label-chip.lc-selected{background:var(--accent);color:#fff;border-color:var(--accent);transform:scale(1.06);}
   .label-chip.lc-used{opacity:0.28;pointer-events:none;}
   .cycle-zones{display:grid;grid-template-columns:repeat(5,1fr);gap:0.6rem;margin-bottom:0.75rem;}
   .czone{background:var(--surface);border:2px dashed var(--border);border-radius:12px;padding:0.65rem 0.35rem 0.75rem;text-align:center;cursor:pointer;transition:all 0.18s;min-height:100px;display:flex;flex-direction:column;align-items:center;gap:0.2rem;}
-  .czone:hover{border-color:var(--accent);background:rgba(232,93,4,0.04);}
+  .czone:hover,.czone.drag-over{border-color:var(--accent);background:rgba(232,93,4,0.06);transform:translateY(-2px);}
   .czone.cz-filled{border-style:solid;border-color:var(--accent2);background:rgba(29,111,164,0.04);}
   .czone.cz-correct{border-color:var(--correct)!important;background:rgba(45,158,68,0.08)!important;}
   .czone.cz-wrong{border-color:var(--warn)!important;background:rgba(192,57,43,0.07)!important;}
@@ -49,14 +49,14 @@
   .cz-answer{font-weight:800;font-size:0.82rem;color:var(--accent2);min-height:1.1rem;line-height:1.2;}
   .sort-game{display:none;}.sort-game.active{display:block;}
   .ev-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.25rem;}
-  .ev-chip{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.85rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all 0.18s;line-height:1.4;box-shadow:var(--shadow);display:flex;align-items:center;gap:0.7rem;}
+  .ev-chip{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.85rem;font-weight:600;color:var(--ink);cursor:grab;transition:all 0.18s;line-height:1.4;box-shadow:var(--shadow);display:flex;align-items:center;gap:0.7rem;}
   .ev-chip:hover:not(.ev-used){border-color:var(--accent2);}
   .ev-chip.ev-sel{border-color:var(--accent);background:rgba(232,93,4,0.06);}
   .ev-chip.ev-used{opacity:0.3;pointer-events:none;}
   .ev-icon{font-size:1.1rem;flex-shrink:0;}
   .slot-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;}
   .ev-slot{background:var(--surface);border:2px dashed var(--border);border-radius:12px;padding:0.75rem 1.1rem;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;gap:1rem;min-height:58px;}
-  .ev-slot:hover{border-color:var(--accent);}
+  .ev-slot:hover,.ev-slot.drag-over{border-color:var(--accent);background:rgba(232,93,4,0.06);transform:translateY(-2px);}
   .ev-slot.es-filled{border-style:solid;border-color:var(--accent2);background:rgba(29,111,164,0.04);}
   .ev-slot.es-correct{border-color:var(--correct)!important;background:rgba(45,158,68,0.07)!important;}
   .ev-slot.es-wrong{border-color:var(--warn)!important;background:rgba(192,57,43,0.07)!important;}
@@ -123,7 +123,7 @@
 <div class="game-area">
 <div class="cycle-game active" id="cycle-game">
   <div class="sec-title">📈 Label the Business Cycle</div>
-  <div class="sec-desc">Terms are shuffled every load. Click a term to select it, then click the matching numbered box.</div>
+  <div class="sec-desc">Terms are shuffled every load. Drag each term into the matching numbered box. Click-to-place still works too.</div>
   <div class="svg-wrap">
     <svg viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
       <line x1="42" y1="10" x2="42" y2="148" stroke="#c0b090" stroke-width="1.2"/>
@@ -138,7 +138,7 @@
       <circle cx="490" cy="90" r="12" fill="#e85d04"/><text x="490" y="95" text-anchor="middle" font-size="11" fill="#fff" font-weight="800" font-family="Syne,sans-serif">5</text>
     </svg>
   </div>
-  <div class="hint-bar"><strong>Selected:</strong> <span id="cyc-sel" style="color:var(--muted)">none — click a term first</span></div>
+  <div class="hint-bar"><strong>Drag or Click:</strong> <span id="cyc-sel" style="color:var(--muted)">drag a term into a box, or click one first</span></div>
   <div class="label-pool" id="label-pool"></div>
   <div class="cycle-zones">
     <div class="czone" id="cz1" onclick="dropTerm(1)"><div class="cz-num">①</div><div class="cz-clue">GDP rising, jobs being added</div><div class="cz-answer" id="ca1"></div></div>
@@ -153,10 +153,10 @@
 </div>
 <div class="sort-game" id="sort-game">
   <div class="sec-title">🗓️ Phase Sorter</div>
-  <div class="sec-desc">Cards are shuffled every load. Click a card to select it, then click the numbered slot where it belongs.</div>
-  <div style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;font-weight:700;">Event Cards — click one</div>
+  <div class="sec-desc">Cards are shuffled every load. Drag each card into the numbered slot where it belongs. Click-to-place still works too.</div>
+  <div style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;font-weight:700;">Event Cards — drag or click one</div>
   <div class="ev-list" id="ev-list"></div>
-  <div style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;font-weight:700;margin-top:1.25rem;">Timeline Slots — click to place</div>
+  <div style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;font-weight:700;margin-top:1.25rem;">Timeline Slots — drop or click to place</div>
   <div class="slot-list" id="slot-list"></div>
   <button class="check-btn" onclick="checkSort()">Check My Order</button>
   <div id="sort-fb" style="text-align:center;font-weight:700;font-size:0.9rem;min-height:1.4rem;"></div>
@@ -201,13 +201,13 @@ function initCycle(){
   cycSel=null;cycPlaced={};
   var terms=shuffle(['Expansion','Peak','Contraction','Trough','Recovery']);
   var pool=document.getElementById('label-pool');pool.innerHTML='';
-  terms.forEach(function(t){var d=document.createElement('div');d.className='label-chip';d.setAttribute('data-t',t);d.textContent=t;d.onclick=function(){pickTerm(t,d);};pool.appendChild(d);});
+  terms.forEach(function(t){var d=document.createElement('div');d.className='label-chip';d.setAttribute('data-t',t);d.setAttribute('draggable','true');d.textContent=t;d.addEventListener('dragstart',function(e){e.dataTransfer.setData('text/plain',t);e.dataTransfer.setData('source','cycle');e.dataTransfer.effectAllowed='move';});d.onclick=function(){pickTerm(t,d);};pool.appendChild(d);});
   [1,2,3,4,5].forEach(function(n){document.getElementById('cz'+n).classList.remove('cz-filled','cz-correct','cz-wrong');document.getElementById('ca'+n).textContent='';});
   document.getElementById('cycle-fb').innerHTML='';document.getElementById('cycle-rb').style.display='none';
-  document.getElementById('cyc-sel').textContent='none — click a term first';document.getElementById('cyc-sel').style.color='var(--muted)';
+  document.getElementById('cyc-sel').textContent='drag a term into a box, or click one first';document.getElementById('cyc-sel').style.color='var(--muted)';
 }
 function pickTerm(t,el){
-  if(cycSel===t){cycSel=null;document.querySelectorAll('.label-chip').forEach(function(c){c.classList.remove('lc-selected');});document.getElementById('cyc-sel').textContent='none — click a term first';document.getElementById('cyc-sel').style.color='var(--muted)';return;}
+  if(cycSel===t){cycSel=null;document.querySelectorAll('.label-chip').forEach(function(c){c.classList.remove('lc-selected');});document.getElementById('cyc-sel').textContent='drag a term into a box, or click one first';document.getElementById('cyc-sel').style.color='var(--muted)';return;}
   document.querySelectorAll('.label-chip').forEach(function(c){c.classList.remove('lc-selected');});
   el.classList.add('lc-selected');cycSel=t;
   document.getElementById('cyc-sel').textContent='"'+t+'" selected — now click a numbered box';document.getElementById('cyc-sel').style.color='var(--accent)';
@@ -218,7 +218,7 @@ function dropTerm(n){
   if(cycPlaced[n]){var old=cycPlaced[n];document.querySelectorAll('.label-chip').forEach(function(c){if(c.getAttribute('data-t')===old)c.classList.remove('lc-used');});}
   cycPlaced[n]=cycSel;document.getElementById('ca'+n).textContent=cycSel;document.getElementById('cz'+n).classList.add('cz-filled');
   document.querySelectorAll('.label-chip').forEach(function(c){if(c.getAttribute('data-t')===cycSel){c.classList.add('lc-used');c.classList.remove('lc-selected');}});
-  cycSel=null;document.getElementById('cyc-sel').textContent='none — click a term first';document.getElementById('cyc-sel').style.color='var(--muted)';
+  cycSel=null;document.getElementById('cyc-sel').textContent='drag a term into a box, or click one first';document.getElementById('cyc-sel').style.color='var(--muted)';
 }
 function checkCycle(){
   if(Object.keys(cycPlaced).length<5){document.getElementById('cycle-fb').innerHTML='<span style="color:var(--accent)">Label all 5 zones first!</span>';return;}
@@ -238,15 +238,15 @@ function initSort(){
   sortSel=null;sortPlaced={};
   var shuffled=shuffle(EVDATA);
   var el=document.getElementById('ev-list');el.innerHTML='';
-  shuffled.forEach(function(e){var d=document.createElement('div');d.className='ev-chip';d.id='ec-'+e.id;d.innerHTML='<span class="ev-icon">'+e.icon+'</span><span>'+e.text+'</span>';d.onclick=function(){pickEv(e.id);};el.appendChild(d);});
+  shuffled.forEach(function(e){var d=document.createElement('div');d.className='ev-chip';d.id='ec-'+e.id;d.setAttribute('draggable','true');d.innerHTML='<span class="ev-icon">'+e.icon+'</span><span>'+e.text+'</span>';d.addEventListener('dragstart',function(ev){ev.dataTransfer.setData('text/plain',e.id);ev.dataTransfer.setData('source','sort');ev.dataTransfer.effectAllowed='move';});d.onclick=function(){pickEv(e.id);};el.appendChild(d);});
   var sl=document.getElementById('slot-list');sl.innerHTML='';
-  for(var i=1;i<=5;i++){var d2=document.createElement('div');d2.className='ev-slot';d2.id='es'+i;d2.innerHTML='<span class="es-num">'+i+'</span><span class="es-text" id="est'+i+'"><span class="es-empty">— select a card, then click here —</span></span>';(function(n){d2.onclick=function(){placeEv(n);};})(i);sl.appendChild(d2);}
+  for(var i=1;i<=5;i++){var d2=document.createElement('div');d2.className='ev-slot';d2.id='es'+i;d2.innerHTML='<span class="es-num">'+i+'</span><span class="es-text" id="est'+i+'"><span class="es-empty">— drop or click a card here —</span></span>';(function(n){d2.onclick=function(){placeEv(n);};})(i);sl.appendChild(d2);}
   document.getElementById('sort-fb').innerHTML='';document.getElementById('sort-rb').style.display='none';
 }
 function pickEv(eid){if(sortSel===eid){sortSel=null;document.querySelectorAll('.ev-chip').forEach(function(c){c.classList.remove('ev-sel');});return;}document.querySelectorAll('.ev-chip').forEach(function(c){c.classList.remove('ev-sel');});document.getElementById('ec-'+eid).classList.add('ev-sel');sortSel=eid;}
 function placeEv(n){
   if(!sortSel)return;var ev=EVDATA.find(function(e){return e.id===sortSel;});
-  Object.keys(sortPlaced).forEach(function(k){if(sortPlaced[k]===sortSel){delete sortPlaced[k];document.getElementById('est'+k).innerHTML='<span class="es-empty">— select a card, then click here —</span>';document.getElementById('es'+k).classList.remove('es-filled');}});
+  Object.keys(sortPlaced).forEach(function(k){if(sortPlaced[k]===sortSel){delete sortPlaced[k];document.getElementById('est'+k).innerHTML='<span class="es-empty">— drop or click a card here —</span>';document.getElementById('es'+k).classList.remove('es-filled');}});
   if(sortPlaced[n]){document.getElementById('ec-'+sortPlaced[n]).classList.remove('ev-used');}
   sortPlaced[n]=sortSel;document.getElementById('est'+n).innerHTML=ev.icon+' '+ev.text;document.getElementById('es'+n).classList.add('es-filled');
   document.getElementById('ec-'+ev.id).classList.add('ev-used');document.getElementById('ec-'+ev.id).classList.remove('ev-sel');sortSel=null;
@@ -303,7 +303,69 @@ function nxt(qi){
   else{var d=document.getElementById('qz-done');d.classList.add('show');document.getElementById('fin-sc').textContent=mcSc+'/'+SQ.length;document.getElementById('fin-msg').textContent=['Keep grinding!','Getting there!','Solid work!','Almost perfect!','Perfect! Business cycle mastered.'][mcSc-1]||'';d.scrollIntoView({behavior:'smooth'});}
 }
 function restartQuiz(){initQuiz();}
-initCycle();initSort();renderCard();initQuiz();
+
+/* ── DRAG + DROP: LABEL THE CYCLE + PHASE SORTER ── */
+function setupCycleDragDrop(){
+  [1,2,3,4,5].forEach(function(n){
+    var zone=document.getElementById('cz'+n);
+    if(!zone || zone.dataset.dragReady==='true')return;
+    zone.dataset.dragReady='true';
+
+    zone.addEventListener('dragover',function(e){
+      e.preventDefault();
+      zone.classList.add('drag-over');
+    });
+
+    zone.addEventListener('dragleave',function(){
+      zone.classList.remove('drag-over');
+    });
+
+    zone.addEventListener('drop',function(e){
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      var source=e.dataTransfer.getData('source');
+      var term=e.dataTransfer.getData('text/plain');
+      if(source!=='cycle' || !term)return;
+      var chip=Array.prototype.find.call(document.querySelectorAll('.label-chip'),function(c){
+        return c.getAttribute('data-t')===term;
+      });
+      if(!chip || chip.classList.contains('lc-used'))return;
+      cycSel=term;
+      dropTerm(n);
+    });
+  });
+}
+
+function setupSortDragDrop(){
+  [1,2,3,4,5].forEach(function(n){
+    var slot=document.getElementById('es'+n);
+    if(!slot || slot.dataset.dragReady==='true')return;
+    slot.dataset.dragReady='true';
+
+    slot.addEventListener('dragover',function(e){
+      e.preventDefault();
+      slot.classList.add('drag-over');
+    });
+
+    slot.addEventListener('dragleave',function(){
+      slot.classList.remove('drag-over');
+    });
+
+    slot.addEventListener('drop',function(e){
+      e.preventDefault();
+      slot.classList.remove('drag-over');
+      var source=e.dataTransfer.getData('source');
+      var eid=e.dataTransfer.getData('text/plain');
+      if(source!=='sort' || !eid)return;
+      var card=document.getElementById('ec-'+eid);
+      if(!card || card.classList.contains('ev-used'))return;
+      sortSel=eid;
+      placeEv(n);
+    });
+  });
+}
+
+initCycle();initSort();setupCycleDragDrop();setupSortDragDrop();renderCard();initQuiz();
 </script>
 </body>
 </html>

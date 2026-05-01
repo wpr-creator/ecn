@@ -245,6 +245,56 @@
     background:rgba(229,83,61,0.12);
     color:var(--wrong);
   }
+  .testprep-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:1rem;
+    margin:1.2rem 0;
+    text-align:left;
+  }
+  .testprep-card h3{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.45rem;
+    letter-spacing:0.05em;
+    color:var(--accent);
+    margin-bottom:0.35rem;
+  }
+  .testprep-q{
+    border-top:1px solid var(--border);
+    padding-top:0.8rem;
+    margin-top:0.8rem;
+  }
+  .testprep-q p{
+    font-size:0.86rem;
+    font-weight:700;
+    line-height:1.45;
+    margin-bottom:0.55rem;
+  }
+  .testprep-choices{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.45rem;
+  }
+  .testprep-choices button{
+    background:#fff;
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:0.5rem 0.75rem;
+    font-family:'DM Sans',sans-serif;
+    font-size:0.78rem;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .testprep-choices button.correct{background:rgba(47,191,113,0.14);color:var(--correct);border-color:var(--correct);}
+  .testprep-choices button.wrong{background:rgba(229,83,61,0.12);color:var(--wrong);border-color:var(--wrong);}
+  .testprep-status{
+    font-size:0.8rem;
+    font-weight:700;
+    margin-top:0.75rem;
+    text-align:center;
+  }
   .unlock-btn{
     background:var(--accent);
     color:white;
@@ -572,6 +622,40 @@
       </div>
     </div>
 
+    <div class="testprep-card">
+      <h3>Final Test-Style Check</h3>
+      <p class="checkpoint-desc" style="margin-bottom:0.5rem;">Answer these quick checkpoint questions before unlocking flashcards and the quiz.</p>
+
+      <div class="testprep-q">
+        <p>1. Which formula correctly shows GDP?</p>
+        <div class="testprep-choices">
+          <button onclick="prepAns(0,this,false)">GDP = Wages + Profits</button>
+          <button onclick="prepAns(0,this,true)">GDP = C + I + G + (X − M)</button>
+          <button onclick="prepAns(0,this,false)">GDP = C + I + T − G</button>
+        </div>
+      </div>
+
+      <div class="testprep-q">
+        <p>2. What does per capita GDP divide total GDP by?</p>
+        <div class="testprep-choices">
+          <button onclick="prepAns(1,this,true)">Total population</button>
+          <button onclick="prepAns(1,this,false)">Total tax revenue</button>
+          <button onclick="prepAns(1,this,false)">Total workforce</button>
+        </div>
+      </div>
+
+      <div class="testprep-q">
+        <p>3. What does informal cash work show about GDP?</p>
+        <div class="testprep-choices">
+          <button onclick="prepAns(2,this,false)">It is always counted</button>
+          <button onclick="prepAns(2,this,true)">GDP can miss off-the-books work</button>
+          <button onclick="prepAns(2,this,false)">It only counts exports</button>
+        </div>
+      </div>
+
+      <div class="testprep-status" id="testprep-status">Complete the final check to unlock review tools.</div>
+    </div>
+
     <button class="unlock-btn" id="unlock-btn" onclick="unlockReview()" disabled>Unlock Flashcards + Quiz</button>
   </div>
 </div>
@@ -616,6 +700,8 @@ function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math
 var gC=0,gW=0,gS=0;
 function addScore(ok){if(ok){gC++;gS++;}else{gW++;gS=0;}document.getElementById('sc-c').textContent=gC;document.getElementById('sc-w').textContent=gW;document.getElementById('sc-s').textContent=gS;}
 var requiredComplete={sort:false,formula:false,percapita:false};
+var testPrepDone=false;
+var prepAnswered=[false,false,false];
 var reviewUnlocked=false;
 
 function sw(m){
@@ -662,11 +748,11 @@ function updateCheckpoint(){
   percapitaStatus.textContent=requiredComplete.percapita?'Complete':'Not Complete';
   percapitaStatus.className='checkpoint-status '+(requiredComplete.percapita?'done':'waiting');
 
-  unlockBtn.disabled=!(requiredComplete.sort && requiredComplete.formula && requiredComplete.percapita);
+  unlockBtn.disabled=!(requiredComplete.sort && requiredComplete.formula && requiredComplete.percapita && testPrepDone);
 }
 
 function unlockReview(){
-  if(!(requiredComplete.sort && requiredComplete.formula && requiredComplete.percapita))return;
+  if(!(requiredComplete.sort && requiredComplete.formula && requiredComplete.percapita && testPrepDone))return;
   reviewUnlocked=true;
   document.getElementById('flash-tab').classList.remove('locked');
   document.getElementById('mc-tab').classList.remove('locked');
@@ -1009,6 +1095,21 @@ function resetPerCapita(){
   document.getElementById('pc-result').textContent='';
   document.getElementById('pc-result').className='pc-result';
   document.getElementById('pc-rb').style.display='none';
+}
+
+/* ── FINAL TEST-STYLE CHECK ── */
+function prepAns(i,btn,correct){
+  if(prepAnswered[i])return;
+  prepAnswered[i]=true;
+  btn.classList.add(correct?'correct':'wrong');
+  Array.from(btn.parentElement.querySelectorAll('button')).forEach(function(b){b.disabled=true;});
+  if(correct){addScore(true);}else{addScore(false);}
+  if(prepAnswered.every(Boolean)){
+    testPrepDone=true;
+    document.getElementById('testprep-status').textContent='✅ Final check complete. Flashcards and quiz are ready.';
+    document.getElementById('testprep-status').style.color='var(--correct)';
+    updateCheckpoint();
+  }
 }
 
 /* ── FLASHCARDS ── */

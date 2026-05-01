@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Fed — U4 L5</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07110d;
+  --deep:#07110d;
+  --green:#0f3b2e;
+  --green2:#145f45;
+  --mint:#8bd7b4;
+  --gold:#caa44a;
+  --gold2:#f2d37b;
+  --paper:#f4ead2;
+  --card:#0e1d17;
+  --surface:#132820;
+  --ink:#f7f1df;
+  --muted:#b8b09c;
+  --red:#b84a3a;
+  --blue:#3f7fbf;
+  --correct:#58c783;
+  --wrong:#df6b5b;
+  --border:rgba(242,211,123,.20);
+  --shadow:0 18px 40px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(202,164,74,.28),transparent 30%),
+    radial-gradient(circle at 15% 18%,rgba(20,95,69,.35),transparent 28%),
+    linear-gradient(135deg,#07110d 0%,#0d221a 50%,#050807 100%);
+  color:var(--ink);
+  font-family:Inter,system-ui,sans-serif;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(242,211,123,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(242,211,123,.045) 1px,transparent 1px);
+  background-size:54px 54px;
+  pointer-events:none;
+}
+header{
+  position:relative;
+  overflow:hidden;
+  padding:2.7rem 1.5rem 2.25rem;
+  text-align:center;
+  border-bottom:4px solid var(--gold);
+  background:
+    linear-gradient(135deg,rgba(7,17,13,.92),rgba(15,59,46,.92)),
+    repeating-linear-gradient(90deg,rgba(242,211,123,.06) 0 1px,transparent 1px 18px);
+}
+header:after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0 0;
+  height:34px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:.35;
+}
+.seal{
+  width:72px;height:72px;
+  margin:0 auto 1rem;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle,var(--gold2),var(--gold));
+  color:#07110d;
+  font-size:2rem;
+  box-shadow:0 0 0 7px rgba(202,164,74,.16),0 0 45px rgba(202,164,74,.28);
+  border:3px solid rgba(244,234,210,.75);
+}
+.eyebrow{
+  font-size:.72rem;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--gold2);
+  font-weight:800;
+  margin-bottom:.65rem;
+}
+h1{
+  font-family:Cinzel,serif;
+  font-size:clamp(2.8rem,8vw,5rem);
+  line-height:.9;
+  font-weight:900;
+  letter-spacing:.01em;
+  color:var(--paper);
+  text-shadow:0 5px 30px rgba(0,0,0,.45);
+}
+h1 span{color:var(--mint)}
+.subtitle{
+  margin-top:.9rem;
+  color:rgba(244,234,210,.66);
+  font-size:.92rem;
+  line-height:1.55;
+}
+.score-bar{
+  display:flex;justify-content:center;gap:2rem;
+  padding:1rem;
+  background:rgba(14,29,23,.82);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(8px);
+}
+.stat{text-align:center}.sv{font-size:2rem;font-weight:900;line-height:1}.green{color:var(--correct)}.red{color:var(--wrong)}.blue{color:var(--mint)}
+.slbl{font-size:.64rem;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);font-weight:800}
+.mode-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:.55rem;padding:1.35rem 1rem}
+.tab-btn{
+  background:rgba(244,234,210,.06);
+  color:var(--muted);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:.6rem 1.15rem;
+  font-family:Inter,sans-serif;
+  font-size:.82rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+.tab-btn:hover,.tab-btn.active{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#07110d;
+  border-color:var(--gold2);
+  transform:translateY(-1px);
+}
+.tab-btn.locked{opacity:.42;filter:grayscale(.4)}
+.game-area{max-width:930px;margin:0 auto;padding:0 1.35rem 4rem}
+.rate-game,.chain-game,.target-game,.results-game,.flash-game,.mc-game{display:none}
+.active{display:block}
+.sec-title{
+  font-family:Cinzel,serif;
+  font-size:1.8rem;
+  color:var(--gold2);
+  margin-bottom:.35rem;
+}
+.sec-desc{
+  color:var(--muted);
+  line-height:1.55;
+  font-size:.9rem;
+  margin-bottom:1.25rem;
+}
+.card,.panel,.q-card,.results-card{
+  background:linear-gradient(180deg,rgba(244,234,210,.075),rgba(244,234,210,.035));
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.35rem;
+  box-shadow:var(--shadow);
+  margin-bottom:1rem;
+}
+.check-btn,.restart-btn{
+  display:block;margin:1rem auto;
+  border:0;border-radius:999px;
+  padding:.78rem 2.2rem;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#07110d;
+  font-family:Inter,sans-serif;
+  font-size:.95rem;
+  font-weight:900;
+  cursor:pointer;
+  transition:.2s;
+}
+.check-btn:hover,.restart-btn:hover{transform:scale(1.04)}
+.hint-bar{
+  background:rgba(139,215,180,.08);
+  border:1px solid rgba(139,215,180,.20);
+  color:var(--muted);
+  border-radius:12px;
+  padding:.72rem 1rem;
+  text-align:center;
+  font-size:.84rem;
+  margin-bottom:1rem;
+}
+.hint-bar strong{color:var(--mint)}
+.chip-pool,.chain-pool{
+  display:flex;flex-wrap:wrap;gap:.65rem;justify-content:center;margin-bottom:1rem;
+}
+.rate-chip,.chain-chip{
+  background:rgba(244,234,210,.08);
+  color:var(--paper);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:.75rem 1rem;
+  font-weight:900;
+  font-size:.86rem;
+  cursor:grab;
+  transition:.18s;
+  box-shadow:0 8px 18px rgba(0,0,0,.18);
+  user-select:none;
+}
+.rate-chip:hover:not(.used),.chain-chip:hover:not(.used){
+  border-color:var(--gold2);
+  color:var(--gold2);
+  transform:translateY(-2px);
+}
+.selected{background:var(--gold)!important;color:#07110d!important;border-color:var(--gold2)!important}
+.used{opacity:.28;pointer-events:none}
+.drop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.drop-zone{
+  background:rgba(7,17,13,.42);
+  border:2px dashed rgba(242,211,123,.22);
+  border-radius:16px;
+  padding:1rem;
+  min-height:230px;
+  transition:.2s;
+}
+.drop-zone.drag-over{border-color:var(--gold2);background:rgba(202,164,74,.10);transform:translateY(-2px)}
+.zone-title{
+  font-weight:900;
+  color:var(--paper);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:.5rem;
+}
+.zone-desc{font-size:.8rem;line-height:1.45;color:var(--muted);margin-bottom:.75rem}
+.placed-item{
+  background:rgba(244,234,210,.09);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.55rem .7rem;
+  font-size:.82rem;
+  font-weight:800;
+  margin-bottom:.45rem;
+}
+.correct-zone{border-color:var(--correct)!important;background:rgba(88,199,131,.08)!important}
+.wrong-zone{border-color:var(--wrong)!important;background:rgba(223,107,91,.08)!important}
+.feedback-line{min-height:1.4rem;text-align:center;font-weight:900;font-size:.9rem}
+.chain-slots{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem;margin-top:1rem}
+.chain-slot{
+  min-height:125px;
+  background:rgba(7,17,13,.45);
+  border:2px dashed rgba(242,211,123,.22);
+  border-radius:16px;
+  padding:.75rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  cursor:pointer;
+  transition:.18s;
+}
+.chain-slot.drag-over{border-color:var(--mint);background:rgba(139,215,180,.08);transform:translateY(-2px)}
+.slot-num{font-size:1.45rem;font-weight:900;color:var(--gold2);margin-bottom:.35rem}
+.slot-text{font-size:.82rem;line-height:1.35;font-weight:900;color:var(--paper)}
+.sim-panel{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+}
+.gauge-box,.decision-box{
+  background:rgba(7,17,13,.42);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1rem;
+}
+.slider-row{margin:1rem 0}
+.slider-row input{width:100%;accent-color:var(--gold)}
+.readout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-top:.75rem}
+.readout{
+  background:rgba(244,234,210,.08);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:.8rem;
+  text-align:center;
+}
+.readout span{display:block;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:900;margin-bottom:.3rem}
+.readout strong{font-size:1.65rem;color:var(--gold2)}
+.gauge{
+  height:22px;
+  background:linear-gradient(90deg,var(--blue),var(--correct),var(--gold),var(--red));
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:1rem;
+  position:relative;
+}
+.gauge:after{
+  content:"";
+  position:absolute;
+  top:-5px;
+  width:8px;height:32px;
+  background:var(--paper);
+  border-radius:99px;
+  left:calc(var(--pos,50) * 1%);
+  transform:translateX(-50%);
+  box-shadow:0 0 15px rgba(255,255,255,.45);
+}
+.choice-row{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.85rem}
+.mini-choice{
+  border:1px solid var(--border);
+  background:rgba(244,234,210,.08);
+  color:var(--paper);
+  border-radius:999px;
+  padding:.58rem .8rem;
+  font-weight:900;
+  cursor:pointer;
+  transition:.18s;
+}
+.mini-choice:hover:not(:disabled){border-color:var(--gold2);color:var(--gold2)}
+.mini-choice.correct{border-color:var(--correct);background:rgba(88,199,131,.12);color:var(--correct)}
+.mini-choice.wrong{border-color:var(--wrong);background:rgba(223,107,91,.10);color:var(--wrong)}
+.results-title{
+  font-family:Cinzel,serif;
+  font-size:2.25rem;
+  color:var(--gold2);
+  text-align:center;
+  margin-bottom:.75rem;
+}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.25rem 0}
+.results-mini{
+  background:rgba(7,17,13,.42);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1rem;
+  text-align:center;
+}
+.results-mini h3{color:var(--mint);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.4rem}
+.results-mini p{font-size:.83rem;color:var(--muted);line-height:1.4}
+.card-wrap{perspective:1000px;width:100%;max-width:590px;margin:0 auto 1.3rem;height:230px;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:.5s}
+.card-inner.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem}
+.card-front{background:rgba(244,234,210,.08);border:1px solid var(--border);box-shadow:var(--shadow)}
+.card-back{background:var(--paper);color:#07110d;border:1px solid var(--gold);transform:rotateY(180deg)}
+.card-tag{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;color:var(--muted);font-weight:900;margin-bottom:.4rem}
+.card-back .card-tag{color:var(--green)}
+.card-term{font-family:Cinzel,serif;font-size:2rem;font-weight:900;color:var(--gold2)}
+.card-back .card-term{color:#07110d}
+.card-def{font-size:.95rem;line-height:1.55;color:#172554;font-weight:700}
+.card-nav{display:flex;justify-content:center;align-items:center;gap:1.3rem}
+.nav-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:rgba(244,234,210,.08);color:var(--gold2);font-size:1.2rem;font-weight:900;cursor:pointer}
+.card-progress{color:var(--muted);font-size:.85rem;font-weight:800}
+.q-num{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold2);font-weight:900;margin-bottom:.5rem}
+.q-stem{font-size:1rem;font-weight:900;line-height:1.5;margin-bottom:1rem}
+.choices{display:flex;flex-direction:column;gap:.55rem}
+.ch-btn{
+  background:rgba(244,234,210,.08);
+  border:1px solid var(--border);
+  color:var(--paper);
+  border-radius:12px;
+  padding:.78rem 1rem;
+  font-family:Inter,sans-serif;
+  font-weight:900;
+  text-align:left;
+  cursor:pointer;
+  transition:.18s;
+}
+.ch-btn:hover:not(:disabled){border-color:var(--mint);background:rgba(139,215,180,.08)}
+.ch-btn.correct{background:rgba(88,199,131,.12);border-color:var(--correct);color:var(--correct)}
+.ch-btn.wrong{background:rgba(223,107,91,.10);border-color:var(--wrong);color:var(--wrong)}
+.feedback{display:none;margin-top:.8rem;border-radius:12px;padding:.75rem .9rem;font-weight:900;font-size:.84rem;line-height:1.45}
+.feedback.show{display:block}
+.feedback.correct{background:rgba(88,199,131,.10);color:var(--correct)}
+.feedback.wrong{background:rgba(223,107,91,.08);color:var(--wrong)}
+.qz-done{text-align:center;padding:2.5rem 1rem;display:none}
+.qz-done.show{display:block}
+.big-score{font-family:Cinzel,serif;font-size:4.6rem;color:var(--gold2);line-height:1}
+@media(max-width:760px){
+  .drop-grid,.sim-panel{grid-template-columns:1fr}
+  .chain-slots{grid-template-columns:1fr}
+  .score-bar{gap:1rem}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="seal">🏦</div>
+  <div class="eyebrow">Unit 4 · Lesson 5 · Economics</div>
+  <h1>THE <span>FED</span></h1>
+  <p class="subtitle">Federal Reserve · Monetary Policy · Interest Rates · Money Supply</p>
+</header>
+
+<div class="score-bar">
+  <div class="stat"><div class="sv green" id="sc-c">0</div><div class="slbl">Correct</div></div>
+  <div class="stat"><div class="sv red" id="sc-w">0</div><div class="slbl">Wrong</div></div>
+  <div class="stat"><div class="sv blue" id="sc-s">0</div><div class="slbl">Streak 🔥</div></div>
+</div>
+
+<div class="mode-tabs">
+  <button class="tab-btn active" onclick="sw('rate')">🎚️ Rate Lever</button>
+  <button class="tab-btn" onclick="sw('chain')">🔗 Rate Chain</button>
+  <button class="tab-btn" onclick="sw('target')">🎯 Inflation Target</button>
+  <button class="tab-btn" onclick="sw('results')">🏁 Results</button>
+  <button class="tab-btn locked" id="flash-tab" onclick="sw('flash')">⚡ Flashcards</button>
+  <button class="tab-btn locked" id="mc-tab" onclick="sw('mc')">🎯 Quiz</button>
+</div>
+
+<div class="game-area">
+
+<div class="rate-game active" id="rate-game">
+  <div class="sec-title">🎚️ Rate Lever Sort</div>
+  <div class="sec-desc">Drag each Fed action into the correct monetary-policy direction.</div>
+  <div class="hint-bar"><strong>Key idea:</strong> lower rates stimulate; higher rates cool inflation.</div>
+  <div class="chip-pool" id="rate-pool"></div>
+  <div class="drop-grid">
+    <div class="drop-zone" id="zone-expansionary" onclick="placeRate('expansionary')">
+      <div class="zone-title">🟢 Expansionary Monetary Policy</div>
+      <div class="zone-desc">Fed lowers rates / increases money supply to restart growth.</div>
+      <div id="list-expansionary"></div>
+    </div>
+    <div class="drop-zone" id="zone-contractionary" onclick="placeRate('contractionary')">
+      <div class="zone-title">🔴 Contractionary Monetary Policy</div>
+      <div class="zone-desc">Fed raises rates / reduces money supply to cool inflation.</div>
+      <div id="list-contractionary"></div>
+    </div>
+  </div>
+  <button class="check-btn" onclick="checkRate()">Check My Sort</button>
+  <div class="feedback-line" id="rate-fb"></div>
+  <button class="check-btn" id="rate-rb" style="display:none;background:var(--green);color:white" onclick="resetRate()">Try Again</button>
+</div>
+
+<div class="chain-game" id="chain-game">
+  <div class="sec-title">🔗 One Number Moves Everything</div>
+  <div class="sec-desc">Build the chain that explains how the federal funds rate moves through banks, loans, consumers, businesses, and the whole economy.</div>
+  <div class="chain-pool" id="chain-pool"></div>
+  <div class="chain-slots" id="chain-slots"></div>
+  <button class="check-btn" onclick="checkChain()">Check My Chain</button>
+  <div class="feedback-line" id="chain-fb"></div>
+  <button class="check-btn" id="chain-rb" style="display:none;background:var(--green);color:white" onclick="resetChain()">Try Again</button>
+</div>
+
+<div class="target-game" id="target-game">
+  <div class="sec-title">🎯 Inflation Target Simulator</div>
+  <div class="sec-desc">Move inflation above or below the Fed's 2% target. Then choose the likely Fed response.</div>
+  <div class="sim-panel">
+    <div class="gauge-box">
+      <div class="zone-title">Inflation Gauge</div>
+      <p class="zone-desc">The Fed does not want zero inflation. Its target is about 2% per year.</p>
+      <div class="slider-row"><input type="range" id="inflation-slider" min="0" max="6" step=".5" value="2" oninput="updateTarget()"></div>
+      <div class="gauge" id="gauge"></div>
+      <div class="readout-grid">
+        <div class="readout"><span>Inflation</span><strong id="inflation-readout">2.0%</strong></div>
+        <div class="readout"><span>Target</span><strong>2.0%</strong></div>
+      </div>
+    </div>
+    <div class="decision-box">
+      <div class="zone-title">Fed Decision</div>
+      <p class="zone-desc" id="target-scenario">Inflation is near target. The Fed may hold steady.</p>
+      <div class="choice-row">
+        <button class="mini-choice" onclick="targetChoice(this,'lower')">Lower Rates</button>
+        <button class="mini-choice" onclick="targetChoice(this,'hold')">Hold Steady</button>
+        <button class="mini-choice" onclick="targetChoice(this,'raise')">Raise Rates</button>
+      </div>
+      <div class="feedback-line" id="target-choice-fb"></div>
+    </div>
+  </div>
+  <button class="check-btn" onclick="finishTarget()">Finish Simulator</button>
+  <div class="feedback-line" id="target-fb"></div>
+</div>
+
+<div class="results-game" id="results-game">
+  <div class="sec-title">🏁 Results Checkpoint</div>
+  <div class="sec-desc">Complete the three Fed activities, then unlock flashcards and the quiz.</div>
+  <div class="results-card">
+    <div class="results-title">Fed Review Complete</div>
+    <p style="color:var(--muted);line-height:1.6;text-align:center;">You practiced monetary-policy direction, the rate-transmission chain, and the 2% inflation target.</p>
+    <div class="results-grid">
+      <div class="results-mini"><h3 id="res-rate">Activity 1</h3><p>Expansionary vs. contractionary monetary policy</p></div>
+      <div class="results-mini"><h3 id="res-chain">Activity 2</h3><p>How one rate moves borrowing costs</p></div>
+      <div class="results-mini"><h3 id="res-target">Activity 3</h3><p>Inflation target and Fed response</p></div>
+    </div>
+    <div style="font-size:1.5rem;font-weight:900;color:var(--gold2);text-align:center;margin-bottom:1rem;">
+      Correct: <span id="final-c">0</span> · Wrong: <span id="final-w">0</span>
+    </div>
+    <button class="check-btn" onclick="unlockReviewTools()">Unlock Flashcards + Quiz</button>
+  </div>
+</div>
+
+<div class="flash-game" id="flash-game">
+  <div class="sec-title">⚡ Key Terms</div>
+  <div class="sec-desc">Click each card to flip.</div>
+  <div class="card-wrap" onclick="flipCard()">
+    <div class="card-inner" id="ci">
+      <div class="card-face card-front"><div><div class="card-tag">Term</div><div class="card-term" id="ct">—</div></div></div>
+      <div class="card-face card-back"><div><div class="card-tag">Definition</div><div class="card-def" id="cd">—</div></div></div>
+    </div>
+  </div>
+  <div class="card-nav">
+    <button class="nav-btn" onclick="prevCard()">←</button>
+    <span class="card-progress" id="cp">1 / 8</span>
+    <button class="nav-btn" onclick="nextCard()">→</button>
+  </div>
+</div>
+
+<div class="mc-game" id="mc-game">
+  <div class="sec-title">🎯 Quick Quiz</div>
+  <div class="sec-desc">Five randomized questions. Answer choices shuffle too.</div>
+  <div id="mc-qs"></div>
+  <div class="qz-done" id="qz-done">
+    <div style="font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Your Score</div>
+    <div class="big-score" id="fin-sc">5/5</div>
+    <div style="margin-top:.75rem;color:var(--muted);font-size:.95rem" id="fin-msg"></div>
+    <button class="restart-btn" onclick="restartQuiz()">Play Again</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+var gC=0,gW=0,gS=0;
+function addScore(ok){if(ok){gC++;gS++;}else{gW++;gS=0;}document.getElementById('sc-c').textContent=gC;document.getElementById('sc-w').textContent=gW;document.getElementById('sc-s').textContent=gS;}
+
+var coreComplete={rate:false,chain:false,target:false};
+var reviewUnlocked=false;
+function updateResults(){
+  document.getElementById('final-c').textContent=gC;
+  document.getElementById('final-w').textContent=gW;
+  document.getElementById('res-rate').textContent=(coreComplete.rate?'✅ ':'⬜ ')+'Activity 1';
+  document.getElementById('res-chain').textContent=(coreComplete.chain?'✅ ':'⬜ ')+'Activity 2';
+  document.getElementById('res-target').textContent=(coreComplete.target?'✅ ':'⬜ ')+'Activity 3';
+}
+function sw(m){
+  if((m==='flash'||m==='mc')&&!reviewUnlocked)m='results';
+  ['rate','chain','target','results','flash','mc'].forEach(function(id){document.getElementById(id+'-game').classList.remove('active');});
+  document.getElementById(m+'-game').classList.add('active');
+  updateResults();
+  var order=['rate','chain','target','results','flash','mc'];
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',order[i]===m);});
+}
+function markCore(name){
+  coreComplete[name]=true;updateResults();
+  if(coreComplete.rate&&coreComplete.chain&&coreComplete.target)setTimeout(function(){sw('results');},500);
+}
+function unlockReviewTools(){
+  reviewUnlocked=true;
+  document.getElementById('flash-tab').classList.remove('locked');
+  document.getElementById('mc-tab').classList.remove('locked');
+  sw('flash');
+}
+
+/* Activity 1 */
+var RATE=[
+  {id:'r1',text:'Lower federal funds rate',zone:'expansionary'},
+  {id:'r2',text:'Cheaper borrowing',zone:'expansionary'},
+  {id:'r3',text:'Increase money supply',zone:'expansionary'},
+  {id:'r4',text:'Restart a slowing economy',zone:'expansionary'},
+  {id:'r5',text:'Raise federal funds rate',zone:'contractionary'},
+  {id:'r6',text:'More expensive borrowing',zone:'contractionary'},
+  {id:'r7',text:'Reduce money supply',zone:'contractionary'},
+  {id:'r8',text:'Cool inflation',zone:'contractionary'}
+];
+var rateSel=null,ratePlaced={};
+function initRate(){
+  rateSel=null;ratePlaced={expansionary:[],contractionary:[]};
+  var pool=document.getElementById('rate-pool');pool.innerHTML='';
+  shuffle(RATE).forEach(function(r){
+    var d=document.createElement('div');d.className='rate-chip';d.id='rate-'+r.id;d.textContent=r.text;d.draggable=true;
+    d.ondragstart=function(e){e.dataTransfer.setData('text/plain',r.id);e.dataTransfer.setData('source','rate');};
+    d.onclick=function(){selectRate(r.id);};pool.appendChild(d);
+  });
+  ['expansionary','contractionary'].forEach(function(z){document.getElementById('list-'+z).innerHTML='';document.getElementById('zone-'+z).classList.remove('correct-zone','wrong-zone');});
+  document.getElementById('rate-fb').innerHTML='';document.getElementById('rate-rb').style.display='none';
+}
+function selectRate(id){rateSel=id;document.querySelectorAll('.rate-chip').forEach(c=>c.classList.remove('selected'));document.getElementById('rate-'+id).classList.add('selected');}
+function placeRate(zone){if(!rateSel)return;placeRateDirect(zone,rateSel);}
+function placeRateDirect(zone,id){
+  Object.keys(ratePlaced).forEach(function(z){ratePlaced[z]=ratePlaced[z].filter(x=>x!==id);renderRateZone(z);});
+  ratePlaced[zone].push(id);renderRateZone(zone);
+  document.getElementById('rate-'+id).classList.add('used');document.getElementById('rate-'+id).classList.remove('selected');
+  rateSel=null;
+}
+function renderRateZone(zone){
+  var list=document.getElementById('list-'+zone);list.innerHTML='';
+  ratePlaced[zone].forEach(function(id){var r=RATE.find(x=>x.id===id);var div=document.createElement('div');div.className='placed-item';div.textContent=r.text;list.appendChild(div);});
+}
+function checkRate(){
+  if(ratePlaced.expansionary.length+ratePlaced.contractionary.length<RATE.length){document.getElementById('rate-fb').innerHTML='<span style="color:var(--wrong)">Sort every action first.</span>';return;}
+  var ok=true;Object.keys(ratePlaced).forEach(z=>ratePlaced[z].forEach(id=>{var r=RATE.find(x=>x.id===id);if(r.zone!==z)ok=false;}));
+  addScore(ok);markCore('rate');
+  document.getElementById('zone-expansionary').classList.add(ok?'correct-zone':'wrong-zone');
+  document.getElementById('zone-contractionary').classList.add(ok?'correct-zone':'wrong-zone');
+  document.getElementById('rate-fb').innerHTML=ok?'<span style="color:var(--correct)">✅ Correct — lower rates stimulate, higher rates cool.</span>':'<span style="color:var(--wrong)">Not quite — expansionary lowers rates; contractionary raises rates.</span>';
+  document.getElementById('rate-rb').style.display='block';
+}
+function resetRate(){initRate();setupRateDrop();}
+function setupRateDrop(){['expansionary','contractionary'].forEach(function(z){var zone=document.getElementById('zone-'+z);zone.ondragover=function(e){e.preventDefault();zone.classList.add('drag-over');};zone.ondragleave=function(){zone.classList.remove('drag-over');};zone.ondrop=function(e){e.preventDefault();zone.classList.remove('drag-over');if(e.dataTransfer.getData('source')==='rate')placeRateDirect(z,e.dataTransfer.getData('text/plain'));};});}
+
+/* Activity 2 */
+var CHAIN=[
+  {id:'c1',text:'Fed changes federal funds rate',slot:1},
+  {id:'c2',text:'Banks adjust borrowing costs',slot:2},
+  {id:'c3',text:'Loans get cheaper or more expensive',slot:3},
+  {id:'c4',text:'Consumers and businesses borrow differently',slot:4},
+  {id:'c5',text:'Spending, hiring, and inflation change',slot:5}
+];
+var chainSel=null,chainPlaced={};
+function initChain(){
+  chainSel=null;chainPlaced={};
+  var pool=document.getElementById('chain-pool');pool.innerHTML='';
+  shuffle(CHAIN).forEach(function(c){
+    var d=document.createElement('div');d.className='chain-chip';d.id='chain-'+c.id;d.textContent=c.text;d.draggable=true;
+    d.ondragstart=function(e){e.dataTransfer.setData('text/plain',c.id);e.dataTransfer.setData('source','chain');};
+    d.onclick=function(){selectChain(c.id);};pool.appendChild(d);
+  });
+  var slots=document.getElementById('chain-slots');slots.innerHTML='';
+  for(var i=1;i<=5;i++){
+    var slot=document.createElement('div');slot.className='chain-slot';slot.id='chain-slot-'+i;
+    slot.innerHTML='<div class="slot-num">'+i+'</div><div class="slot-text" id="chain-text-'+i+'">Drop step here</div>';
+    (function(n){slot.onclick=function(){placeChain(n);};slot.ondragover=function(e){e.preventDefault();slot.classList.add('drag-over');};slot.ondragleave=function(){slot.classList.remove('drag-over');};slot.ondrop=function(e){e.preventDefault();slot.classList.remove('drag-over');if(e.dataTransfer.getData('source')==='chain'){chainSel=e.dataTransfer.getData('text/plain');placeChain(n);}};})(i);
+    slots.appendChild(slot);
+  }
+  document.getElementById('chain-fb').innerHTML='';document.getElementById('chain-rb').style.display='none';
+}
+function selectChain(id){chainSel=id;document.querySelectorAll('.chain-chip').forEach(c=>c.classList.remove('selected'));document.getElementById('chain-'+id).classList.add('selected');}
+function placeChain(n){
+  if(!chainSel)return;
+  Object.keys(chainPlaced).forEach(function(k){if(chainPlaced[k]===chainSel){delete chainPlaced[k];document.getElementById('chain-text-'+k).textContent='Drop step here';document.getElementById('chain-slot-'+k).classList.remove('correct-zone','wrong-zone');}});
+  if(chainPlaced[n])document.getElementById('chain-'+chainPlaced[n]).classList.remove('used');
+  var step=CHAIN.find(x=>x.id===chainSel);
+  chainPlaced[n]=chainSel;document.getElementById('chain-text-'+n).textContent=step.text;document.getElementById('chain-'+chainSel).classList.add('used');document.getElementById('chain-'+chainSel).classList.remove('selected');chainSel=null;
+}
+function checkChain(){
+  if(Object.keys(chainPlaced).length<5){document.getElementById('chain-fb').innerHTML='<span style="color:var(--wrong)">Build all 5 steps first.</span>';return;}
+  var ok=true;for(var i=1;i<=5;i++){var step=CHAIN.find(x=>x.id===chainPlaced[i]);if(!step||step.slot!==i)ok=false;}
+  addScore(ok);markCore('chain');
+  for(var j=1;j<=5;j++)document.getElementById('chain-slot-'+j).classList.add(ok?'correct-zone':'wrong-zone');
+  document.getElementById('chain-fb').innerHTML=ok?'<span style="color:var(--correct)">✅ Correct — one rate moves through the whole economy.</span>':'<span style="color:var(--wrong)">Not quite — start with the Fed rate, then banks, loans, borrowing, economy.</span>';
+  document.getElementById('chain-rb').style.display='block';
+}
+function resetChain(){initChain();}
+
+/* Activity 3 */
+var targetChoiceMade=false;
+function updateTarget(){
+  var val=parseFloat(document.getElementById('inflation-slider').value);
+  document.getElementById('inflation-readout').textContent=val.toFixed(1)+'%';
+  document.getElementById('gauge').style.setProperty('--pos',(val/6*100));
+  var txt='';
+  if(val<1.5)txt='Inflation is below target. Deflation risk can cause people to stop spending.';
+  else if(val<=2.5)txt='Inflation is near target. The Fed may hold steady.';
+  else txt='Inflation is above target. The Fed may raise rates to cool prices.';
+  document.getElementById('target-scenario').textContent=txt;
+  document.getElementById('target-choice-fb').innerHTML='';
+  document.querySelectorAll('.decision-box .mini-choice').forEach(b=>{b.disabled=false;b.classList.remove('correct','wrong');});
+  targetChoiceMade=false;
+}
+function targetChoice(btn,choice){
+  if(targetChoiceMade)return;
+  var val=parseFloat(document.getElementById('inflation-slider').value);
+  var correct='hold';
+  if(val<1.5)correct='lower';
+  else if(val>2.5)correct='raise';
+  var ok=choice===correct;
+  targetChoiceMade=true;
+  btn.classList.add(ok?'correct':'wrong');
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.disabled=true);
+  addScore(ok);
+  document.getElementById('target-choice-fb').innerHTML=ok?'<span style="color:var(--correct)">✅ Correct Fed response.</span>':'<span style="color:var(--wrong)">Not quite — below target usually means lower rates; above target means raise rates.</span>';
+}
+function finishTarget(){
+  if(!targetChoiceMade){document.getElementById('target-fb').innerHTML='<span style="color:var(--wrong)">Choose a Fed response first.</span>';return;}
+  markCore('target');
+  document.getElementById('target-fb').innerHTML='<span style="color:var(--correct)">✅ Inflation target activity complete.</span>';
+}
+
+/* Flashcards */
+var CARDS=shuffle([
+  {t:'Federal Reserve',d:'The central bank of the United States that controls monetary policy.'},
+  {t:'Monetary Policy',d:'The Fed’s use of interest rates and money supply to stabilize the economy.'},
+  {t:'Federal Funds Rate',d:'The benchmark interest rate the Fed sets that moves other borrowing costs.'},
+  {t:'Interest Rate',d:'The cost of borrowing money transmitted from the Fed through banks to consumers.'},
+  {t:'Money Supply',d:'The total amount of money circulating in the economy at any time.'},
+  {t:'Expansionary Monetary Policy',d:'The Fed lowers rates and increases money supply to stimulate growth.'},
+  {t:'Contractionary Monetary Policy',d:'The Fed raises rates and reduces money supply to slow inflation.'},
+  {t:'Inflation Target',d:'The Fed’s goal of approximately 2% annual inflation as a sign of economic health.'}
+]);
+var cI=0,cF=false;
+function renderCard(){document.getElementById('ct').textContent=CARDS[cI].t;document.getElementById('cd').textContent=CARDS[cI].d;document.getElementById('cp').textContent=(cI+1)+' / '+CARDS.length;document.getElementById('ci').classList.remove('flipped');cF=false;}
+function flipCard(){cF=!cF;document.getElementById('ci').classList.toggle('flipped',cF);}
+function nextCard(){cI=(cI+1)%CARDS.length;renderCard();}
+function prevCard(){cI=(cI-1+CARDS.length)%CARDS.length;renderCard();}
+
+/* Quiz */
+var ALLQ=[
+  {s:'The Federal Reserve mainly uses what kind of policy?',c:['Monetary policy','Fiscal policy','Trade policy'],a:0,f:'The Fed controls monetary policy: interest rates and money supply.'},
+  {s:'What happens when the Fed lowers the federal funds rate?',c:['Borrowing usually gets cheaper','Borrowing usually gets more expensive','Taxes automatically rise'],a:0,f:'Lower rates make borrowing cheaper and can stimulate growth.'},
+  {s:'What happens when the Fed raises rates to fight inflation?',c:['Borrowing gets more expensive','Money becomes free','Congress must pass a tax cut'],a:0,f:'Higher rates cool inflation by making borrowing and spending harder.'},
+  {s:'What is the Fed’s inflation target?',c:['About 2%','0%','10%'],a:0,f:'The Fed aims for roughly 2% annual inflation, not zero.'},
+  {s:'The federal funds rate affects mortgages, car loans, and credit cards because it does what?',c:['Moves borrowing costs through banks','Directly sets every loan contract','Only affects government debt'],a:0,f:'The Fed sets a benchmark rate that banks transmit into the broader economy.'},
+  {s:'Why is the Fed powerful even though voters do not elect it?',c:['It controls the cost of money through rates','It writes the federal budget','It controls state tax rates'],a:0,f:'The Fed can move borrowing costs without a new vote or law.'}
+];
+var SQ=[],mcAns=[],mcSc=0;
+function initQuiz(){SQ=shuffle(ALLQ).slice(0,5);mcAns=new Array(SQ.length).fill(false);mcSc=0;var c=document.getElementById('mc-qs');c.innerHTML='';document.getElementById('qz-done').classList.remove('show');SQ.forEach(function(q,qi){var idx=shuffle([0,1,2]);var choices=idx.map(i=>q.c[i]);var correct=idx.indexOf(q.a);var card=document.createElement('div');card.className='q-card';card.id='q'+qi;card.innerHTML='<div class="q-num">Question '+(qi+1)+' of '+SQ.length+'</div><div class="q-stem">'+q.s+'</div><div class="choices">'+choices.map(function(ch,ci){return '<button class="ch-btn" onclick="ansQ('+qi+','+ci+','+correct+')">'+String.fromCharCode(65+ci)+'. '+ch+'</button>';}).join('')+'</div><div class="feedback" id="fb'+qi+'"></div><button class="check-btn" id="nb'+qi+'" onclick="nxt('+qi+')">'+(qi<SQ.length-1?'Next Question':'See My Score')+'</button>';c.appendChild(card);if(qi>0)card.style.display='none';});}
+function ansQ(qi,ci,correct){if(mcAns[qi])return;mcAns[qi]=true;var ok=ci===correct;if(ok)mcSc++;addScore(ok);var card=document.getElementById('q'+qi);card.querySelectorAll('.ch-btn').forEach(function(b,i){b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===ci&&!ok)b.classList.add('wrong');});var fb=document.getElementById('fb'+qi);fb.textContent=(ok?'Correct! ':'Not quite. ')+SQ[qi].f;fb.className='feedback show '+(ok?'correct':'wrong');}
+function nxt(qi){if(qi<SQ.length-1){var n=document.getElementById('q'+(qi+1));n.style.display='block';n.scrollIntoView({behavior:'smooth',block:'start'});}else{var d=document.getElementById('qz-done');d.classList.add('show');document.getElementById('fin-sc').textContent=mcSc+'/'+SQ.length;document.getElementById('fin-msg').textContent=mcSc>=4?'Strong Fed control-room thinking.':'Review rates, money supply, and the inflation target.';d.scrollIntoView({behavior:'smooth'});}}
+function restartQuiz(){initQuiz();}
+
+window.addEventListener('DOMContentLoaded',function(){
+  initRate();setupRateDrop();
+  initChain();
+  updateTarget();
+  renderCard();initQuiz();updateResults();
+});
+</script>
+</body>
+</html>
